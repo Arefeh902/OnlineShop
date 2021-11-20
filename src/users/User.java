@@ -11,8 +11,8 @@ public class User {
     static Long helpId = 1L;
     Long id;
 
-    String username;
-    String password;
+    public String username;
+    private String password;
 
     Cart currentCart;
     Cart nextCart;
