@@ -14,8 +14,6 @@ public class Seller extends User {
         super(username);
         this.password = password;
         this.products = new ArrayList<>();
-
-        Main.appData.sellers.add(this);
     }
 
     public void addProduct(String name, Long price, Long inventory){
@@ -26,7 +24,7 @@ public class Seller extends User {
 
     public static Seller getByUsername(String username){
         for(Seller seller: Main.appData.sellers){
-            if(seller.username.equals(username)){
+            if(seller.username.equals(username) && seller.isActive){
                 return seller;
             }
         }
@@ -34,6 +32,7 @@ public class Seller extends User {
     }
 
     public static Boolean login(String username, String password){
+//        System.out.println();
         Seller tmpSeller = Seller.getByUsername(username);
         if(tmpSeller != null){
             if(tmpSeller.password.equals(password)){

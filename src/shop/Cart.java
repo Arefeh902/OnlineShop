@@ -22,8 +22,6 @@ public class Cart {
 
         this.id = helpId;
         helpId += 1;
-
-        Main.appData.carts.add(this);
     }
 
     public void addProduct(Product product, Long count){

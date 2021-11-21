@@ -24,6 +24,8 @@ public class User {
     ArrayList<Product> favouriteProducts;
     ArrayList<Purchase> purchases;
 
+    Boolean isActive;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -33,6 +35,8 @@ public class User {
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
+
+        this.isActive = true;
 
         this.id = helpId;
         helpId += 1;
@@ -47,24 +51,35 @@ public class User {
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
 
+        this.isActive = true;
+
         this.id = helpId;
         helpId += 1;
 
-        Main.appData.users.add(this);
     }
 
     public static User getByUsername(String username){
         for(User user: Main.appData.users){
-            if(user.username.equals(username)){
+            if(user.username.equals(username) && user.isActive){
                 return user;
             }
         }
         return null;
     }
 
-    public static Boolean isUsernameUnique(String inputUsername){
+    public static Boolean isUsernameUnique(String username){
         for(User user: Main.appData.users){
-            if(user.username.equals(inputUsername)){
+            if(user.username.equals(username) && user.isActive){
+                return Boolean.FALSE;
+            }
+        }
+        for(Seller seller: Main.appData.sellers){
+            if(seller.username.equals(username) && seller.isActive){
+                return Boolean.FALSE;
+            }
+        }
+        for(Admin admin: Main.appData.admins){
+            if(admin.username.equals(username) && admin.isActive){
                 return Boolean.FALSE;
             }
         }
@@ -83,7 +98,7 @@ public class User {
         }
         System.out.println("Enter username");
         String username = scanner.nextLine();
-        while(!User.isUsernameUnique(username)){
+        while (!User.isUsernameUnique(username)) {
             System.out.println("Username must be unique");
             System.out.println("Enter another username");
             username = scanner.nextLine();
@@ -101,15 +116,19 @@ public class User {
         }
         User newUser;
         if(userType == 0){
-            new User(username, password);
+            Main.appData.createUser(username, password);
         }
         else{
-            new Seller(username, password);
+            Main.appData.createSeller(username, password);
         }
         System.out.println("user created successfully!");
     }
 
     public static Boolean login(){
+//        System.out.println("printing users");
+//        for(User user: Main.appData.users){
+//            System.out.println(user.username);
+//        }
         System.out.println("Enter username");
         String username = scanner.nextLine();
         System.out.println("Enter password");
@@ -127,9 +146,11 @@ public class User {
         if(Seller.login(username, password)){
             return true;
         }
-        if(Admin.login(username, password))
+        if(Admin.login(username, password)){
+            return true;
+        }
         System.out.println("username and password don't match, try again");
-        return login();
+        return false;
     }
 
     public void purchase(){

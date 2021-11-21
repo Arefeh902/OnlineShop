@@ -34,27 +34,32 @@ public class AppData {
         currentAdmin = null;
     }
 
-    public void addUser(User user){
+    public void createUser(String username, String password){
+        User user = new User(username, password);
         users.add(user);
     }
 
-    public void addSeller(Seller seller){
+    public void createSeller(String username, String password){
+        Seller seller = new Seller(username, password);
         sellers.add(seller);
     }
 
-    public void addAdmin(Admin admin){
+    public void createAdmin(String username, String password){
+        Admin admin = new Admin(username, password);
         admins.add(admin);
     }
 
-    public void addCart(Cart cart){
+    public void createCart(User user){
+        Cart cart = new Cart(user);
         carts.add(cart);
     }
 
-    public void addProduct(Product product){
+    public void createProduct(String name, Long price, Long inventory){
+        Product product = new Product(name, price, inventory);
         products.add(product);
     }
 
-    public void addPurchase(Purchase purchase){
-        purchases.add(purchase);
-    }
+//    public void createPurchase(){
+//        purchases.add(purchase);
+//    }
 }
