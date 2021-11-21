@@ -1,5 +1,9 @@
 package shop;
 
+import functionality.Main;
+import users.User;
+
+import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 
 public class Cart {
@@ -7,13 +11,19 @@ public class Cart {
     static Long helpId = 1L;
     Long id;
 
+    User client;
     ArrayList<CartProduct> products;
+    public CartStatus status;
 
-    public Cart() {
+    public Cart(User user) {
+        this.client = user;
         this. products = new ArrayList<>();
+        this.status = CartStatus.PENDING;
 
         this.id = helpId;
         helpId += 1;
+
+        Main.appData.carts.add(this);
     }
 
     public void addProduct(Product product, Long count){
@@ -23,4 +33,5 @@ public class Cart {
         }
         CartProduct cartProduct = new CartProduct(this, product, count);
     }
+
 }

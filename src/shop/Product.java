@@ -9,13 +9,18 @@ public class Product {
     Long id;
 
     Seller seller;
+    String name;
     Long price;
     Long inventory;
 
-    public Product(Long price, Long inventory) {
+    ProductStatus status;
+
+    public Product(String name, Long price, Long inventory) {
+        this.name = name;
         this.seller = Main.appData.currentSeller;
         this.price = price;
         this.inventory = inventory;
+        this.status = ProductStatus.ACTIVE;
 
         id = helpId;
         helpId += 1;

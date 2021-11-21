@@ -16,6 +16,8 @@ public class Admin {
 
         id = helpId;
         helpId += 1;
+
+        Main.appData.admins.add(this);
     }
 
     public static Admin getByUsername(String username){

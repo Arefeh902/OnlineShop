@@ -14,6 +14,14 @@ public class Seller extends User {
         super(username);
         this.password = password;
         this.products = new ArrayList<>();
+
+        Main.appData.sellers.add(this);
+    }
+
+    public void addProduct(String name, Long price, Long inventory){
+        Product product = new Product(name, price, inventory);
+        products.add(product);
+        Main.appData.products.add(product);
     }
 
     public static Seller getByUsername(String username){

@@ -2,6 +2,7 @@ package users;
 
 import functionality.Main;
 import shop.Cart;
+import shop.CartStatus;
 import shop.Product;
 import shop.Purchase;
 
@@ -27,8 +28,8 @@ public class User {
         this.username = username;
         this.password = password;
 
-        this.currentCart = new Cart();
-        this.nextCart = new Cart();
+        this.currentCart = new Cart(this);
+        this.nextCart = new Cart(this);
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
@@ -40,14 +41,16 @@ public class User {
     public User(String username) {
         this.username = username;
 
-        this.currentCart = new Cart();
-        this.nextCart = new Cart();
+        this.currentCart = new Cart(this);
+        this.nextCart = new Cart(this);
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
 
         this.id = helpId;
         helpId += 1;
+
+        Main.appData.users.add(this);
     }
 
     public static User getByUsername(String username){
@@ -98,12 +101,11 @@ public class User {
         }
         User newUser;
         if(userType == 0){
-            newUser = new User(username, password);
+            new User(username, password);
         }
         else{
-            newUser = new Seller(username, password);
+            new Seller(username, password);
         }
-        Main.appData.users.add(newUser);
         System.out.println("user created successfully!");
     }
 
@@ -128,6 +130,21 @@ public class User {
         if(Admin.login(username, password))
         System.out.println("username and password don't match, try again");
         return login();
+    }
+
+    public void purchase(){
+
+    }
+
+
+    public void clearCart(){
+        currentCart.status = CartStatus.DELETED;
+        currentCart = nextCart;
+        nextCart = new Cart(this);
+    }
+
+    public void addFavourite(Product product){
+        favouriteProducts.add(product);
     }
 
 }
