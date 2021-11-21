@@ -49,17 +49,19 @@ public class AppData {
         admins.add(admin);
     }
 
-    public void createCart(User user){
+    public Cart createCart(User user){
         Cart cart = new Cart(user);
         carts.add(cart);
+        return cart;
     }
 
-    public void createProduct(String name, Long price, Long inventory){
+    public Product createProduct(String name, Long price, Long inventory){
         Product product = new Product(name, price, inventory);
         products.add(product);
+        return product;
     }
 
-//    public void createPurchase(){
+//    public Product createPurchase(){
 //        purchases.add(purchase);
 //    }
 }

@@ -32,4 +32,20 @@ public class Cart {
         CartProduct cartProduct = new CartProduct(this, product, count);
     }
 
+    public void editProduct(Product product, Long count){
+        for(CartProduct cartP: products){
+            if(cartP.equals(product)){
+                if(count == 0){
+                    products.remove(cartP);
+                    break;
+                }
+                cartP.count = count;
+            }
+        }
+    }
+
+    public void removeProduct(Product product){
+        editProduct(product, 0L);
+    }
+
 }

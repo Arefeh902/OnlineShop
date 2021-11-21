@@ -45,8 +45,8 @@ public class User {
     public User(String username) {
         this.username = username;
 
-        this.currentCart = new Cart(this);
-        this.nextCart = new Cart(this);
+        this.currentCart = Main.appData.createCart(this);
+        this.nextCart = Main.appData.createCart(this);
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
@@ -85,6 +85,32 @@ public class User {
         }
         return Boolean.TRUE;
     }
+
+
+    public void purchase(){
+
+    }
+
+
+
+    public void addFavourite(Product product){
+        favouriteProducts.add(product);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void register(){
         System.out.println("Enter 0 for Client and 1 for Seller");
@@ -153,19 +179,10 @@ public class User {
         return false;
     }
 
-    public void purchase(){
-
-    }
-
-
-    public void clearCart(){
-        currentCart.status = CartStatus.DELETED;
-        currentCart = nextCart;
-        nextCart = new Cart(this);
-    }
-
-    public void addFavourite(Product product){
-        favouriteProducts.add(product);
+    public void logout(){
+        Main.appData.currentUser = null;
+        Main.appData.currentSeller = null;
+        Main.appData.currentAdmin = null;
     }
 
 }
