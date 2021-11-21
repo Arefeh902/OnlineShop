@@ -1,9 +1,44 @@
 package users;
 
-public class Admin extends Seller {
+import functionality.Main;
+
+public class Admin {
+
+    static Long helpId = 1L;
+    Long id;
+
+    public String username;
+    private String password;
 
     public Admin(String username, String password) {
-        super(username, password);
+        this.username = username;
+        this.password = password;
 
+        id = helpId;
+        helpId += 1;
     }
+
+    public static Admin getByUsername(String username){
+        for(Admin admin: Main.appData.admins){
+            if(admin.username.equals(username)){
+                return admin;
+            }
+        }
+        return null;
+    }
+
+    public static Boolean login(String username, String password) {
+        Admin tmpAdmin = Admin.getByUsername(username);
+        if (tmpAdmin != null) {
+            if (tmpAdmin.password.equals(password)) {
+                Main.appData.currentUser = null;
+                Main.appData.currentSeller = null;
+                Main.appData.currentAdmin = tmpAdmin;
+                System.out.println("Logged in successfully!");
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

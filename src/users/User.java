@@ -37,6 +37,19 @@ public class User {
         helpId += 1;
     }
 
+    public User(String username) {
+        this.username = username;
+
+        this.currentCart = new Cart();
+        this.nextCart = new Cart();
+
+        this.favouriteProducts = new ArrayList<>();
+        this.purchases = new ArrayList<>();
+
+        this.id = helpId;
+        helpId += 1;
+    }
+
     public static User getByUsername(String username){
         for(User user: Main.appData.users){
             if(user.username.equals(username)){
@@ -56,7 +69,6 @@ public class User {
     }
 
     public static void register(){
-
         System.out.println("Enter 0 for Client and 1 for Seller");
         int userType = scanner.nextInt();
         scanner.nextLine();
@@ -95,26 +107,27 @@ public class User {
         System.out.println("user created successfully!");
     }
 
-    public static void login(){
+    public static Boolean login(){
         System.out.println("Enter username");
         String username = scanner.nextLine();
         System.out.println("Enter password");
         String password = scanner.nextLine();
-        User tmp = User.getByUsername(username);
-        if(tmp != null){
-            if(tmp.password.equals(password)){
-                Main.appData.currentUser = tmp;
+        User tmpUser = User.getByUsername(username);
+        if(tmpUser != null){
+            if(tmpUser.password.equals(password)){
+                Main.appData.currentUser = tmpUser;
+                Main.appData.currentSeller = null;
+                Main.appData.currentAdmin = null;
                 System.out.println("Logged in successfully!");
-                return;
+                return true;
             }
         }
-        else{
-            System.out.println("username is invalid, try again");
-            login();
-            return;
+        if(Seller.login(username, password)){
+            return true;
         }
+        if(Admin.login(username, password))
         System.out.println("username and password don't match, try again");
-        login();
+        return login();
     }
 
 }
