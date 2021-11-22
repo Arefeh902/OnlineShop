@@ -12,13 +12,10 @@ public class Admin {
     public String username;
     private String password;
 
-    Boolean isActive;
 
     public Admin(String username, String password) {
         this.username = username;
         this.password = password;
-
-        this.isActive = true;
 
         id = helpId;
         helpId += 1;
@@ -28,7 +25,7 @@ public class Admin {
 
     public static Admin getByUsername(String username){
         for(Admin admin: Main.appData.admins){
-            if(admin.username.equals(username) && admin.isActive){
+            if(admin.username.equals(username)){
                 return admin;
             }
         }

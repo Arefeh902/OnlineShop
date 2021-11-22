@@ -47,6 +47,9 @@ public class AppData {
 
     public void createSeller(String username, String password){
         Seller seller = new Seller(username, password);
+        System.out.println("tof");
+        System.out.println("tof");
+        System.out.println("tof");
         sellers.add(seller);
     }
 

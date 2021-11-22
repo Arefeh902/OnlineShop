@@ -19,13 +19,11 @@ public class User {
     public String username;
     private String password;
 
-    Cart currentCart;
-    Cart nextCart;
+    public Cart currentCart;
+    public Cart nextCart;
 
-    ArrayList<Product> favouriteProducts;
+    public ArrayList<Product> favouriteProducts;
     ArrayList<Purchase> purchases;
-
-    Boolean isActive;
 
     public User(String username, String password) {
         this.username = username;
@@ -36,8 +34,6 @@ public class User {
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
-
-        this.isActive = true;
 
         this.id = helpId;
         helpId += 1;
@@ -52,8 +48,6 @@ public class User {
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
 
-        this.isActive = true;
-
         this.id = helpId;
         helpId += 1;
 
@@ -61,7 +55,7 @@ public class User {
 
     public static User getByUsername(String username){
         for(User user: Main.appData.users){
-            if(user.username.equals(username) && user.isActive){
+            if(user.username.equals(username)){
                 return user;
             }
         }
@@ -70,17 +64,17 @@ public class User {
 
     public static Boolean isUsernameUnique(String username){
         for(User user: Main.appData.users){
-            if(user.username.equals(username) && user.isActive){
+            if(user.username.equals(username)){
                 return Boolean.FALSE;
             }
         }
         for(Seller seller: Main.appData.sellers){
-            if(seller.username.equals(username) && seller.isActive){
+            if(seller.username.equals(username)){
                 return Boolean.FALSE;
             }
         }
         for(Admin admin: Main.appData.admins){
-            if(admin.username.equals(username) && admin.isActive){
+            if(admin.username.equals(username)){
                 return Boolean.FALSE;
             }
         }
@@ -137,6 +131,9 @@ public class User {
 //        for(User user: Main.appData.users){
 //            System.out.println(user.toString());
 //        }
+        System.out.println("user type : " + userType);
+        System.out.println(Main.appData.users.size());
+        System.out.println(Main.appData.sellers.size());
         if(!User.isUsernameUnique(username)){
             System.out.println("Username must be unique");
             return Boolean.FALSE;
@@ -152,9 +149,12 @@ public class User {
             System.out.println("" + e);
         }
         if(userType == 0){
+            System.out.println("lanat!");
             Main.appData.createUser(username, password);
         }
         else{
+            System.out.println("user is a seller!");
+            System.out.println();
             Main.appData.createSeller(username, password);
         }
         System.out.println("created successfully");
@@ -174,7 +174,7 @@ public class User {
                 Main.appData.currentUser = tmpUser;
                 Main.appData.currentSeller = null;
                 Main.appData.currentAdmin = null;
-                System.out.println("Logged in successfully!");
+                System.out.println("Logged in successfully! in user.register");
                 return true;
             }
         }
@@ -188,10 +188,11 @@ public class User {
         return false;
     }
 
-    public void logout(){
+    public static void logout(){
         Main.appData.currentUser = null;
         Main.appData.currentSeller = null;
         Main.appData.currentAdmin = null;
+        Main.window.setScene(Main.loginScene);
     }
 
     @Override

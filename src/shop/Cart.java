@@ -12,7 +12,7 @@ public class Cart {
     Long id;
 
     User client;
-    ArrayList<CartProduct> products;
+    public ArrayList<CartProduct> products;
     public CartStatus status;
 
     public Cart(User user) {

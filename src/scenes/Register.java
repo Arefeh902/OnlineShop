@@ -1,19 +1,44 @@
 package scenes;
 
 import functionality.Main;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import users.Hash;
 import users.User;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Register {
     public static void register(){
         VBox registerLayout = new VBox(Main.space);
         Label title = new Label("Register");
-        MenuButton userTypeButton = new MenuButton("user type");
-        userTypeButton.getItems().addAll(new MenuItem("Client"), new MenuItem("Seller"));
+
+        RadioButton rb1 = new RadioButton("Client");
+        RadioButton rb2 = new RadioButton("Seller");
+        rb1.setSelected(true);
+        final ToggleGroup group = new ToggleGroup();
+        rb1.setToggleGroup(group);
+        rb2.setToggleGroup(group);
+        HBox hbox = new HBox(rb1, rb2);
+        hbox.setAlignment(Pos.CENTER);
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n)
+            {
+
+                RadioButton selectedButton = (RadioButton)group.getSelectedToggle();
+                if(selectedButton == rb2){
+                    userType = 1;
+                }else{
+                    userType = 0;
+                }
+            }
+        });
         Label usernameLabel = new Label("Enter username");
         TextField username = new TextField();
         username.setMaxWidth((float)Main.screenWidth/4);
@@ -26,16 +51,8 @@ public class Register {
         Button registerButton = new Button();
         registerButton.setText("register");
         registerButton.setOnAction(e -> {
-            int userType = 0;
-            if(userTypeButton.getItems().equals("Seller")){
-                userType = 1;
-            }
             if(User.register(userType, username.getText(), password.getText(), verifyPassword.getText())){
                 Main.window.setScene(Main.loginScene);
-            }
-            else{
-                System.out.println(username.getText() + password.getText() + verifyPassword.getText());
-                register();
             }
             username.clear();
             password.clear();
@@ -46,7 +63,7 @@ public class Register {
         loginButton.setOnAction(e -> {
             Main.window.setScene(Main.loginScene);
         });
-        registerLayout.getChildren().addAll(title, userTypeButton, usernameLabel, username, passwordLabel, password);
+        registerLayout.getChildren().addAll(title, hbox, usernameLabel, username, passwordLabel, password);
         registerLayout.getChildren().addAll(verifyPasswordLabel, verifyPassword, registerButton, loginButton);
         registerLayout.setAlignment(Pos.CENTER);
         Main.registerScene = new Scene(registerLayout, Main.screenWidth, Main.screenHeight);
@@ -65,7 +82,7 @@ public class Register {
         loginButton.setText("login");
         loginButton.setOnAction(e -> {
             if(User.login(username.getText(), password.getText())){
-//                Main.window.setScene();
+                UserDashboard.setDashboard();
             }
             username.clear();
             password.clear();
@@ -80,28 +97,5 @@ public class Register {
         Main.loginScene = new Scene(loginLayout, Main.screenWidth, Main.screenHeight);
     }
 
-//    play scene
-//    VBox playLayout = new VBox(space);
-//    Label instruction = new Label("Guess the number!");
-//    Label furtherInstruction = new Label("From 1 to 100");
-//    TextField guessedNum = new TextField();
-//        guessedNum.setMaxWidth((int)screenWidth/4);
-//    Button guessButton = new Button();
-//        guessButton.setText("Guess");
-//        guessButton.setOnAction(e -> {
-//        int guess = Integer.parseInt(guessedNum.getText());
-//        if (guess < randomInt)
-//            furtherInstruction.setText("higher!");
-//        else if (guess > randomInt)
-//            furtherInstruction.setText("lower!");
-//        else{
-//
-//            window.setScene(end);
-//            furtherInstruction.setText("From 1 to 100");
-//        }
-//    });
-//        playLayout.getChildren().addAll(instruction, furtherInstruction, guessedNum, guessButton);
-//        playLayout.setAlignment(Pos.CENTER);
-//    play = new Scene(playLayout, screenWidth, screenHeight);
 
 }

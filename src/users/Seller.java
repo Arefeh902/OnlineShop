@@ -25,7 +25,7 @@ public class Seller extends User {
 
     public static Seller getByUsername(String username){
         for(Seller seller: Main.appData.sellers){
-            if(seller.username.equals(username) && seller.isActive){
+            if(seller.username.equals(username)){
                 return seller;
             }
         }
