@@ -61,7 +61,9 @@ public class AppData {
         return product;
     }
 
-//    public Product createPurchase(){
-//        purchases.add(purchase);
-//    }
+    public Purchase createPurchase(Cart cart){
+        Purchase purchase = new Purchase(cart);
+        purchases.add(purchase);
+        return purchase;
+    }
 }

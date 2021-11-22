@@ -86,12 +86,11 @@ public class User {
         return Boolean.TRUE;
     }
 
-
     public void purchase(){
-
+        Main.appData.createPurchase(currentCart);
+        currentCart = nextCart;
+        nextCart = Main.appData.createCart(this);
     }
-
-
 
     public void addFavourite(Product product){
         favouriteProducts.add(product);
@@ -151,10 +150,6 @@ public class User {
     }
 
     public static Boolean login(){
-//        System.out.println("printing users");
-//        for(User user: Main.appData.users){
-//            System.out.println(user.username);
-//        }
         System.out.println("Enter username");
         String username = scanner.nextLine();
         System.out.println("Enter password");

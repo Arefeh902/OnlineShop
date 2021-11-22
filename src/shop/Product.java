@@ -25,4 +25,16 @@ public class Product {
         id = helpId;
         helpId += 1;
     }
+
+    public void editName(String name){
+        this.name = name;
+    }
+
+    public void editPrice(Long price){
+        this.price = price;
+    }
+
+    public void editInventory(Long inventory){
+        this.inventory = inventory;
+    }
 }
