@@ -49,5 +49,15 @@ public class Admin {
         return false;
     }
 
+    private static void allUsers(){
+        System.out.println("id username");
+        for(User user: Main.appData.users){
+            System.out.println(user.toString());
+        }
+        for(Seller seller: Main.appData.sellers){
+            System.out.println(seller.toString());
+        }
+    }
+
 
 }

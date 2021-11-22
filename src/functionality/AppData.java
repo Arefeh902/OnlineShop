@@ -1,5 +1,7 @@
 package functionality;
 
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import shop.Cart;
 import shop.Product;
 import shop.Purchase;
@@ -21,6 +23,9 @@ public class AppData {
     public Seller currentSeller;
     public Admin currentAdmin;
 
+
+
+
     public AppData() {
         users = new ArrayList<>();
         sellers = new ArrayList<>();
@@ -32,6 +37,7 @@ public class AppData {
         currentUser = null;
         currentSeller = null;
         currentAdmin = null;
+
     }
 
     public void createUser(String username, String password){

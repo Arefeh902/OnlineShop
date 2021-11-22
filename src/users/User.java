@@ -97,6 +97,29 @@ public class User {
         favouriteProducts.add(product);
     }
 
+    public void removeFavourite(Product product){
+        favouriteProducts.remove(product);
+    }
+
+    public void addProductCurrentCart(Product product, Long count){
+        currentCart.addProduct(product, count);
+    }
+
+    public void addProductCurrentCart(Product product){
+        currentCart.addProduct(product, 1L);
+    }
+
+    public void editProductCurrentCart(Product product, Long count){
+
+    }
+
+    public void addProductNextCart(Product product, Long count){
+        nextCart.addProduct(product, count);
+    }
+
+    public void addProductNextCart(Product product){
+        nextCart.addProduct(product, 1L);
+    }
 
 
 
@@ -110,35 +133,17 @@ public class User {
 
 
 
-
-
-    public static void register(){
-        System.out.println("Enter 0 for Client and 1 for Seller");
-        int userType = scanner.nextInt();
-        scanner.nextLine();
-        while(userType != 0 && userType != 1){
-            System.out.println("Invalid input!");
-            System.out.println("Enter 0 for Client and 1 for Seller");
-            userType = scanner.nextInt();
-            scanner.nextLine();
-        }
-        System.out.println("Enter username");
-        String username = scanner.nextLine();
-        while (!User.isUsernameUnique(username)) {
+    public static Boolean register(int userType, String username, String password, String verifyPassword){
+//        for(User user: Main.appData.users){
+//            System.out.println(user.toString());
+//        }
+        if(!User.isUsernameUnique(username)){
             System.out.println("Username must be unique");
-            System.out.println("Enter another username");
-            username = scanner.nextLine();
+            return Boolean.FALSE;
         }
-        System.out.println("Enter password");
-        String password = scanner.nextLine();
-        System.out.println("Enter password Again");
-        String passwordVerify = scanner.nextLine();
-        while(!password.equals(passwordVerify)){
+        if(!password.equals(verifyPassword)){
             System.out.println("passwords didn't match, try again!");
-            System.out.println("Enter password");
-            password = scanner.nextLine();
-            System.out.println("Enter password Again");
-            passwordVerify = scanner.nextLine();
+            return Boolean.FALSE;
         }
         try{
             password = Hash.bytesToHex(Hash.getSHA(password));
@@ -152,14 +157,11 @@ public class User {
         else{
             Main.appData.createSeller(username, password);
         }
-        System.out.println("user created successfully!");
+        System.out.println("created successfully");
+        return Boolean.TRUE;
     }
 
-    public static Boolean login(){
-        System.out.println("Enter username");
-        String username = scanner.nextLine();
-        System.out.println("Enter password");
-        String password = scanner.nextLine();
+    public static Boolean login(String username, String password){
         try{
             password = Hash.bytesToHex(Hash.getSHA(password));
         }catch (NoSuchAlgorithmException e){
@@ -192,5 +194,10 @@ public class User {
         Main.appData.currentAdmin = null;
     }
 
+    @Override
+    public String toString() {
+        return  id +
+                " " + username;
+    }
 }
 

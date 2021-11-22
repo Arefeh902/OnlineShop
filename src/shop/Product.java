@@ -37,4 +37,27 @@ public class Product {
     public void editInventory(Long inventory){
         this.inventory = inventory;
     }
+
+    public void archiveProduct(){
+        this.status = ProductStatus.ARCHIVED;
+    }
+
+    public void deleteProduct(){
+        this.status = ProductStatus.DELETED;
+    }
+
+    public static void allProducts(){
+        System.out.println("id name price inventory");
+        for(Product product: Main.appData.products){
+            System.out.println(product.toString());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return  id +
+                ". " + name +
+                "  " + price +
+                " " + inventory;
+    }
 }
