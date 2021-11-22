@@ -36,12 +36,6 @@ public class Admin {
     }
 
     public static Boolean login(String username, String password) {
-        try{
-            password = Hash.bytesToHex(Hash.getSHA(password));
-        }catch (NoSuchAlgorithmException e){
-            System.out.println("there seems to be a problem");
-            System.out.println("" + e);
-        }
         Admin tmpAdmin = Admin.getByUsername(username);
         if (tmpAdmin != null) {
             if (tmpAdmin.password.equals(password)) {

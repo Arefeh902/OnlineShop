@@ -33,12 +33,6 @@ public class Seller extends User {
     }
 
     public static Boolean login(String username, String password){
-        try{
-            password = Hash.bytesToHex(Hash.getSHA(password));
-        }catch (NoSuchAlgorithmException e){
-            System.out.println("there seems to be a problem");
-            System.out.println("" + e);
-        }
         Seller tmpSeller = Seller.getByUsername(username);
         if(tmpSeller != null){
             if(tmpSeller.password.equals(password)){
