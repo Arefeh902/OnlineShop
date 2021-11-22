@@ -13,8 +13,8 @@ import users.User;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 public class Register {
+    static int userType;
     public static void register(){
         VBox registerLayout = new VBox(Main.space);
         Label title = new Label("Register");
@@ -30,7 +30,6 @@ public class Register {
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n)
             {
-
                 RadioButton selectedButton = (RadioButton)group.getSelectedToggle();
                 if(selectedButton == rb2){
                     userType = 1;

@@ -128,12 +128,6 @@ public class User {
 
 
     public static Boolean register(int userType, String username, String password, String verifyPassword){
-//        for(User user: Main.appData.users){
-//            System.out.println(user.toString());
-//        }
-        System.out.println("user type : " + userType);
-        System.out.println(Main.appData.users.size());
-        System.out.println(Main.appData.sellers.size());
         if(!User.isUsernameUnique(username)){
             System.out.println("Username must be unique");
             return Boolean.FALSE;
@@ -149,12 +143,9 @@ public class User {
             System.out.println("" + e);
         }
         if(userType == 0){
-            System.out.println("lanat!");
             Main.appData.createUser(username, password);
         }
         else{
-            System.out.println("user is a seller!");
-            System.out.println();
             Main.appData.createSeller(username, password);
         }
         System.out.println("created successfully");
@@ -174,7 +165,7 @@ public class User {
                 Main.appData.currentUser = tmpUser;
                 Main.appData.currentSeller = null;
                 Main.appData.currentAdmin = null;
-                System.out.println("Logged in successfully! in user.register");
+                System.out.println("Logged in successfully!");
                 return true;
             }
         }
