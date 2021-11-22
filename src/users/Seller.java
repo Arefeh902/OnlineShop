@@ -3,6 +3,7 @@ package users;
 import functionality.Main;
 import shop.Product;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Seller extends User {
@@ -32,7 +33,12 @@ public class Seller extends User {
     }
 
     public static Boolean login(String username, String password){
-//        System.out.println();
+        try{
+            password = Hash.bytesToHex(Hash.getSHA(password));
+        }catch (NoSuchAlgorithmException e){
+            System.out.println("there seems to be a problem");
+            System.out.println("" + e);
+        }
         Seller tmpSeller = Seller.getByUsername(username);
         if(tmpSeller != null){
             if(tmpSeller.password.equals(password)){

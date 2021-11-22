@@ -6,6 +6,7 @@ import shop.CartStatus;
 import shop.Product;
 import shop.Purchase;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -139,7 +140,12 @@ public class User {
             System.out.println("Enter password Again");
             passwordVerify = scanner.nextLine();
         }
-        User newUser;
+        try{
+            password = Hash.bytesToHex(Hash.getSHA(password));
+        }catch (NoSuchAlgorithmException e){
+            System.out.println("there seems to be a problem");
+            System.out.println("" + e);
+        }
         if(userType == 0){
             Main.appData.createUser(username, password);
         }
@@ -154,6 +160,12 @@ public class User {
         String username = scanner.nextLine();
         System.out.println("Enter password");
         String password = scanner.nextLine();
+        try{
+            password = Hash.bytesToHex(Hash.getSHA(password));
+        }catch (NoSuchAlgorithmException e){
+            System.out.println("there seems to be a problem");
+            System.out.println("" + e);
+        }
         User tmpUser = User.getByUsername(username);
         if(tmpUser != null){
             if(tmpUser.password.equals(password)){
