@@ -10,14 +10,14 @@ public class CartProduct {
     //price of one of the product
     public Long price;
     public Long count;
-    CartProductStatus status;
+    public CartProductStatus status;
 
     public CartProduct(Cart cart, Product product, Long count) {
         this.cart = cart;
         this.product = product;
         this.count = count;
 
-        status = CartProductStatus.NOT_PURCHASED;
+        status = CartProductStatus.PENDING;
 
         id = helpId;
         helpId += 1;

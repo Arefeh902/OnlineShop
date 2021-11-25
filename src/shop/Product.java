@@ -11,7 +11,7 @@ public class Product {
     public Seller seller;
     public String name;
     public Long price;
-    Long inventory;
+    public Long inventory;
 
     ProductStatus status;
 

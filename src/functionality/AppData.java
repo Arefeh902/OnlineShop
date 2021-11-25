@@ -63,6 +63,7 @@ public class AppData {
 
     public Product createProduct(String name, Long price, Long inventory){
         Product product = new Product(name, price, inventory);
+        product.seller = currentSeller;
         products.add(product);
         return product;
     }

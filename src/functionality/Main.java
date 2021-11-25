@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import scenes.Register;
+import scenes.UserDashboard;
 import shop.Product;
 import users.User;
 
@@ -34,11 +35,21 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) {
+        User.register(1, "1", "1", "1");
+        User.login("1", "1");
+        System.out.println(appData.currentSeller);
+        appData.createProduct("product1", 123L, 4L);
+        appData.createProduct("product2", 13476L, 9L);
+        appData.createProduct("product3", 5365L, 13L);
         window = primaryStage;
+        for(Product p: appData.products){
+            System.out.println(p.seller.toString());
+        }
         window.setTitle("Online Shop");
         createScenes();
-        window.setScene(registerScene);
+//        window.setScene(registerScene);
         window.show();
+        UserDashboard.sellerDashboard();
     }
 
     public void createScenes(){

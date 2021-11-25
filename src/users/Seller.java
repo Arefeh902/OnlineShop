@@ -1,29 +1,50 @@
 package users;
 
 import functionality.Main;
-import shop.CartProduct;
-import shop.Product;
+import shop.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Seller extends User {
 
-    public ArrayList<Product> products;
-    public ArrayList<CartProduct> unverifiedPurchases;
+//    public ArrayList<Product> products;
     private String password;
 
     public Seller(String username, String password) {
         super(username);
         this.password = password;
-        this.products = new ArrayList<>();
-        this.unverifiedPurchases = new ArrayList<>();
+//        this.products = new ArrayList<>();
     }
 
-    public void addProduct(String name, Long price, Long inventory){
-        Product product = new Product(name, price, inventory);
-        products.add(product);
-        Main.appData.products.add(product);
+//    public void addProduct(String name, Long price, Long inventory){
+//        Product product = new Product(name, price, inventory);
+//        products.add(product);
+//        Main.appData.products.add(product);
+//    }
+
+    public ArrayList<Product> getProducts(){
+        ArrayList<Product> products = new ArrayList<>();
+        for(Product product: Main.appData.products){
+            if(product.seller.equals(this)){
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
+    public ArrayList<CartProduct> getUnverifiedProducts(){
+        ArrayList<CartProduct> unverified = new ArrayList<>();
+        for(Cart cart: Main.appData.carts){
+            if(cart.status.equals(CartStatus.PURCHASED)){
+                for(CartProduct cartP: cart.cartProducts){
+                    if(cartP.product.seller.equals(Main.appData.currentSeller) && cartP.status == CartProductStatus.PENDING){
+                        unverified.add(cartP);
+                    }
+                }
+            }
+        }
+        return unverified;
     }
 
     public static Seller getByUsername(String username){
@@ -48,9 +69,5 @@ public class Seller extends User {
         }
         return false;
     }
-
-//    public static ArrayList<Product> getUnverifiedProducts(){
-//
-//    }
 
 }
