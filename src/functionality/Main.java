@@ -42,19 +42,11 @@ public class Main extends Application{
         appData.createProduct("product2", 13476L, 9L);
         appData.createProduct("product3", 5365L, 13L);
         window = primaryStage;
-        for(Product p: appData.products){
-            System.out.println(p.seller.toString());
-        }
+        User.logout();
         window.setTitle("Online Shop");
-        createScenes();
-//        window.setScene(registerScene);
-        window.show();
-        UserDashboard.sellerDashboard();
-    }
-
-    public void createScenes(){
         Register.register();
-        Register.login();
+        window.show();
+//        UserDashboard.sellerDashboard();
     }
 
 }

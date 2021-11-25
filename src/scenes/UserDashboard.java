@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import shop.Cart;
 import shop.CartProduct;
 import shop.Product;
+import users.Seller;
 import users.User;
 
 import java.util.ArrayList;
@@ -54,70 +55,34 @@ public class UserDashboard {
         Main.window.setScene(Main.userDashboardScene);
     }
 
-    public static void sellerDashboard(){
-        VBox sellerDashboardLayout = new VBox(Main.space);
-        sellerDashboardLayout.setAlignment(Pos.CENTER);
-        Label title = new Label("Dashboard");
-        Button myProductsButton = new Button("my products");
-        myProductsButton.setOnAction(e -> {
-            showSellerProductsView(Main.sellerDashboardScene);
-        });
-        Button unverifiedProducts = new Button("unverified products");
-        unverifiedProducts.setOnAction(e -> {
-            showUnverifiedProducts();
-        });
-        Button allProductsButton = new Button("all products");
-        allProductsButton.setOnAction(e -> {
-//            showAllProducts(1);
-        });
-        Button addProductButton = new Button("add product");
-        addProductButton.setOnAction(e -> {
-            createProductView(Main.sellerDashboardScene);
-        });
-        Button logoutButton = new Button("logout");
-        logoutButton.setOnAction(e -> {
-            User.logout();
-        });
-        sellerDashboardLayout.getChildren().addAll(title, myProductsButton, unverifiedProducts, allProductsButton);
-        sellerDashboardLayout.getChildren().addAll(addProductButton, logoutButton);
-        Main.sellerDashboardScene = new Scene(sellerDashboardLayout, Main.screenWidth, Main.screenHeight);
-        Main.window.setScene(Main.sellerDashboardScene);
-    }
 
     public static void setDashboard(){
         if(Main.appData.currentUser != null){
             userDashboard();
         }else if(Main.appData.currentSeller != null){
-            sellerDashboard();
+            SellerDashBoard.sellerDashboard();
         }else if(Main.appData.currentAdmin != null){
 //            adminDashboard();
         }
     }
 
-    public static void showSellerProductsView(Scene prev){
-        System.out.println("these are my products");
-        System.out.println(Main.appData.currentSeller);
-        StackPane showSellerProductLayout = new StackPane();
-        showSellerProductLayout.setAlignment(Pos.CENTER);
+    public static void showAllProducts(Scene prev){
+        VBox showAllProductsLayout = new VBox(Main.space);
+        showAllProductsLayout.setAlignment(Pos.CENTER);
         ObservableList<HBox> productsList = FXCollections.observableArrayList();
-        HBox labels = new HBox(Main.space);
-        labels.setAlignment(Pos.CENTER);
-        String nameSpace = "        ";
-        String priceSpace = "       ";
-        String inventorySpace = "   ";
-        labels.getChildren().addAll(new Label("name" + nameSpace),new Label("price" + priceSpace), new Label("inventory" + inventorySpace), new Label("edit"));
-        productsList.add(labels);
-        for(Product product: Main.appData.currentSeller.getProducts()){
+        for(Product product: Main.appData.products){
             HBox hbox = new HBox(Main.space);
             hbox.setAlignment(Pos.CENTER);
-            Label nameLabel = new Label(product.name);
-            Label priceLabel = new Label(product.price.toString());
-            Label inventoryLabel = new Label(product.inventory.toString());
-            Button editButton = new Button("edit");
-            editButton.setOnAction(e -> {
-                editProductView(product);
-            });
-            hbox.getChildren().addAll(nameLabel, priceLabel, inventoryLabel, editButton);
+            Label name = new Label(product.name.toString());
+            Label price = new Label(product.price.toString());
+            hbox.getChildren().addAll(name, price);
+            if(Main.appData.currentUser != null){
+                Button addToCart = new Button("add to cart");
+                addToCart.setOnAction(e -> {
+                    System.out.println("will implement soon!");
+                });
+                hbox.getChildren().add(addToCart);
+            }
             productsList.add(hbox);
         }
         final ListView<HBox> listView = new ListView<HBox>(productsList);
@@ -126,115 +91,10 @@ public class UserDashboard {
         backButton.setOnAction(e -> {
             Main.window.setScene(prev);
         });
-        showSellerProductLayout.getChildren().addAll(listView, backButton);
-        Scene showSellerProductScene = new Scene(showSellerProductLayout, Main.screenWidth, Main.screenHeight);
-        Main.window.setScene(showSellerProductScene);
+        showAllProductsLayout.getChildren().addAll(listView, backButton);
+        Scene showAllProductsScene = new Scene(showAllProductsLayout, Main.screenWidth, Main.screenHeight);
+        Main.window.setScene(showAllProductsScene);
     }
-
-    public static void editProductView(Product product){
-        VBox editProductLayout = new VBox(Main.space);
-        editProductLayout.setAlignment(Pos.CENTER);
-        Label emptyLabel = new Label("");
-        HBox name = new HBox(Main.space);
-        name.setAlignment(Pos.CENTER);
-        Label nameLabel = new Label("name: " + product.name);
-        TextField nameText = new TextField();
-        name.getChildren().addAll(nameLabel, nameText);
-        HBox price = new HBox(Main.space);
-        price.setAlignment(Pos.CENTER);
-        Label priceLabel = new Label("price " + product.price);
-        TextField priceText = new TextField();
-        price.getChildren().addAll(priceLabel, priceText);
-        HBox inventory = new HBox(Main.space);
-        inventory.setAlignment(Pos.CENTER);
-        Label inventoryLabel = new Label("inventory: " + product.inventory);
-        TextField inventoryText = new TextField();
-        inventory.getChildren().addAll(inventoryLabel, inventoryText);
-        Button editButton = new Button("edit");
-        editButton.setOnAction(e -> {
-            emptyLabel.setText("");
-            if(nameText.getText() != null)
-                product.editName(nameText.getText());
-            if(priceText.getText() != null){
-                try{
-                    Long newPrice = Long.parseLong(priceText.getText());
-                    product.editPrice(newPrice);
-                }catch (NumberFormatException exception){
-                    emptyLabel.setText("invalid input!");
-                }
-            }
-            if(inventoryText.getText() != null){
-                try{
-                    Long newInventory = Long.parseLong(inventoryText.getText());
-                    product.editInventory(newInventory);
-                }catch (NumberFormatException exception){
-                    emptyLabel.setText("invalid input!");
-                }
-            }
-            nameText.clear();
-            priceText.clear();
-            inventoryText.clear();
-        });
-        Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            if(Main.appData.currentSeller != null)
-                Main.window.setScene(Main.sellerDashboardScene);
-            else if(Main.appData.currentAdmin != null)
-                System.out.println("should implement");
-        });
-        editProductLayout.getChildren().addAll(name, price, inventory, editButton, emptyLabel, backButton);
-        Scene editProductScene = new Scene(editProductLayout, Main.screenWidth, Main.screenHeight);
-        Main.window.setScene(editProductScene);
-    }
-
-    public static void createProductView(Scene prev){
-        VBox createProductLayout = new VBox(Main.space);
-        createProductLayout.setAlignment(Pos.CENTER);
-        Label nameLabel = new Label("Name");
-        TextField name = new TextField();
-        name.setMaxWidth((float)Main.screenWidth/4);
-        Label priceLabel = new Label("Price");
-        TextField price = new TextField();
-        price.setMaxWidth((float)Main.screenWidth/4);
-        Label inventoryLabel = new Label("Inventory");
-        TextField inventory = new TextField();
-        inventory.setMaxWidth((float)Main.screenWidth/4);
-        Button addButton = new Button("add");
-        Label emptyLabel = new Label("");
-        addButton.setOnAction(e -> {
-            for(Product p: Main.appData.products){
-                System.out.println(p.toString());
-            }
-            emptyLabel.setText("");
-            try{
-                Long priceVar = Long.parseLong(price.getText());
-                Long inventoryVar = Long.parseLong(inventory.getText());
-                Main.appData.createProduct(name.getText(), priceVar, inventoryVar);
-                name.clear();
-                price.clear();
-                inventory.clear();
-                emptyLabel.setText("");
-            }catch (NumberFormatException exception){
-                emptyLabel.setText("invalid input!");
-            }
-        });
-        Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            Main.window.setScene(prev);
-        });
-        createProductLayout.getChildren().addAll(nameLabel, name, priceLabel, price, inventoryLabel, inventory);
-        createProductLayout.getChildren().addAll(addButton, backButton, emptyLabel);
-        Scene productView = new Scene(createProductLayout, Main.screenWidth, Main.screenHeight);
-        Main.window.setScene(productView);
-    }
-
-
-
-    public static void showUnverifiedProducts(){
-
-    }
-
-
 
 
 
