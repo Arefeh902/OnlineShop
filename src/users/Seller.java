@@ -1,6 +1,7 @@
 package users;
 
 import functionality.Main;
+import shop.CartProduct;
 import shop.Product;
 
 import java.security.NoSuchAlgorithmException;
@@ -8,13 +9,15 @@ import java.util.ArrayList;
 
 public class Seller extends User {
 
-    ArrayList<Product> products;
+    public ArrayList<Product> products;
+    public ArrayList<CartProduct> unverifiedPurchases;
     private String password;
 
     public Seller(String username, String password) {
         super(username);
         this.password = password;
         this.products = new ArrayList<>();
+        this.unverifiedPurchases = new ArrayList<>();
     }
 
     public void addProduct(String name, Long price, Long inventory){
@@ -46,6 +49,8 @@ public class Seller extends User {
         return false;
     }
 
-
+//    public static ArrayList<Product> getUnverifiedProducts(){
+//
+//    }
 
 }

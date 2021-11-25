@@ -13,9 +13,9 @@ public class Purchase {
     public Purchase(Cart cart) {
         this.cart = cart;
         //could be calculated in the for loop below
-        productCount = Integer.toUnsignedLong(cart.products.size());
+        productCount = Integer.toUnsignedLong(cart.cartProducts.size());
         totalPrice = 0L;
-        for(CartProduct cartP: cart.products){
+        for(CartProduct cartP: cart.cartProducts){
             cartP.price = cartP.product.price;
             totalPrice += cartP.count * cartP.price;
             cartP.product.inventory -= cartP.count;

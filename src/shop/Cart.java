@@ -12,12 +12,12 @@ public class Cart {
     Long id;
 
     User client;
-    public ArrayList<CartProduct> products;
+    public ArrayList<CartProduct> cartProducts;
     public CartStatus status;
 
     public Cart(User user) {
         this.client = user;
-        this. products = new ArrayList<>();
+        this.cartProducts = new ArrayList<>();
         this.status = CartStatus.PENDING;
 
         this.id = helpId;
@@ -33,10 +33,10 @@ public class Cart {
     }
 
     public void editProduct(Product product, Long count){
-        for(CartProduct cartP: products){
+        for(CartProduct cartP: cartProducts){
             if(cartP.equals(product)){
                 if(count == 0){
-                    products.remove(cartP);
+                    cartProducts.remove(cartP);
                     break;
                 }
                 cartP.count = count;

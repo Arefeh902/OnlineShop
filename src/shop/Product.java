@@ -8,9 +8,9 @@ public class Product {
     static Long helpId = 1L;
     Long id;
 
-    Seller seller;
-    String name;
-    Long price;
+    public Seller seller;
+    public String name;
+    public Long price;
     Long inventory;
 
     ProductStatus status;
