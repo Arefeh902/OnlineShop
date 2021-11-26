@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import shop.CartProduct;
+import shop.CartProductStatus;
 import shop.Product;
 import users.User;
 
@@ -192,6 +193,8 @@ public class SellerDashBoard {
             Label countLabel = new Label(cartP.count.toString());
             Button verifyButton = new Button("verify");
             verifyButton.setOnAction(e -> {
+                cartP.status = CartProductStatus.VERIFIED;
+                showUnverifiedProducts(prev);
             });
             hbox.getChildren().addAll(productLabel, priceLabel, countLabel, verifyButton);
             productsList.add(hbox);

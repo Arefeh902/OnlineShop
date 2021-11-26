@@ -22,8 +22,6 @@ public class Purchase {
         }
         status = PurchaseStatus.PENDING;
 
-        System.out.println("purchase created!");
-
         id = helpId;
         helpId += 1;
     }

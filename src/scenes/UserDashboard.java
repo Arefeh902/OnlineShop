@@ -26,10 +26,10 @@ public class UserDashboard {
             Main.appData.currentUser.currentCart.verifyCart();
             displayCart(Main.appData.currentUser.currentCart, Main.userDashboardScene);
         });
-        Button favouritesButton = new Button("favourites");
-        favouritesButton.setOnAction(e -> {
-//            displayProducts(Main.appData.currentUser.favouriteProducts);
-        });
+//        Button favouritesButton = new Button("favourites");
+//        favouritesButton.setOnAction(e -> {
+////            displayProducts(Main.appData.currentUser.favouriteProducts);
+//        });
         Button purchasesButton = new Button("purchases");
         purchasesButton.setOnAction(e -> {
             showUserPurchases(Main.userDashboardScene);

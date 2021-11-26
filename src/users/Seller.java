@@ -16,7 +16,7 @@ public class Seller extends User {
         this.password = password;
 //        this.products = new ArrayList<>();
     }
-
+//
 //    public void addProduct(String name, Long price, Long inventory){
 //        Product product = new Product(name, price, inventory);
 //        products.add(product);
@@ -35,12 +35,10 @@ public class Seller extends User {
 
     public ArrayList<CartProduct> getUnverifiedProducts(){
         ArrayList<CartProduct> unverified = new ArrayList<>();
-        for(Cart cart: Main.appData.carts){
-            if(cart.status.equals(CartStatus.PURCHASED)){
-                for(CartProduct cartP: cart.cartProducts){
-                    if(cartP.product.seller.equals(Main.appData.currentSeller) && cartP.status == CartProductStatus.PENDING){
-                        unverified.add(cartP);
-                    }
+        for(Purchase purchase: Main.appData.purchases){
+            for(CartProduct cartP: purchase.cart.cartProducts){
+                if(cartP.product.seller.equals(Main.appData.currentSeller) && cartP.status == CartProductStatus.PENDING){
+                    unverified.add(cartP);
                 }
             }
         }
