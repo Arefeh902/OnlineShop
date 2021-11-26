@@ -24,40 +24,29 @@ public class SellerDashboard {
         VBox sellerDashboardLayout = new VBox(Main.space);
         sellerDashboardLayout.setAlignment(Pos.CENTER);
         Label title = new Label("Dashboard");
+        sellerDashboardLayout.getChildren().add(title);
         Button myProductsButton = new Button("my products");
-        myProductsButton.setOnAction(e -> {
-            showSellerProductsView(Main.sellerDashboardScene);
-        });
+        myProductsButton.setOnAction(e -> showSellerProductsView(Main.sellerDashboardScene));
         sellerDashboardLayout.getChildren().add(myProductsButton);
         Button unverifiedProducts = new Button("unverified products");
-        unverifiedProducts.setOnAction(e -> {
-            showUnverifiedProducts(Main.sellerDashboardScene);
-        });
+        unverifiedProducts.setOnAction(e -> showUnverifiedProducts(Main.sellerDashboardScene));
         sellerDashboardLayout.getChildren().add(unverifiedProducts);
         Button allProductsButton = new Button("all products");
-        allProductsButton.setOnAction(e -> {
-            UserDashboard.showAllProducts(Main.sellerDashboardScene);
-        });
+        allProductsButton.setOnAction(e -> UserDashboard.showAllProducts(Main.appData.products, Main.sellerDashboardScene));
         sellerDashboardLayout.getChildren().add(allProductsButton);
         if(admin == null) {
             Button addProductButton = new Button("add product");
-            addProductButton.setOnAction(e -> {
-                createProductView(Main.sellerDashboardScene);
-            });
+            addProductButton.setOnAction(e -> createProductView(Main.sellerDashboardScene));
             sellerDashboardLayout.getChildren().add(addProductButton);
         }
         if(admin == null) {
             Button logoutButton = new Button("logout");
-            logoutButton.setOnAction(e -> {
-                User.logout();
-            });
+            logoutButton.setOnAction(e -> User.logout());
             sellerDashboardLayout.getChildren().add(logoutButton);
         }
         if(admin != null){
             Button backButton = new Button("back");
-            backButton.setOnAction(e -> {
-                AdminDashboard.adminDashboard();
-            });
+            backButton.setOnAction(e -> AdminDashboard.adminDashboard());
             sellerDashboardLayout.getChildren().add(backButton);
         }
         Main.sellerDashboardScene = new Scene(sellerDashboardLayout, Main.screenWidth, Main.screenHeight);
@@ -82,18 +71,14 @@ public class SellerDashboard {
             Label priceLabel = new Label(product.price.toString());
             Label inventoryLabel = new Label(product.inventory.toString());
             Button editButton = new Button("edit");
-            editButton.setOnAction(e -> {
-                editProductView(product);
-            });
+            editButton.setOnAction(e -> editProductView(product));
             hbox.getChildren().addAll(nameLabel, priceLabel, inventoryLabel, editButton);
             productsList.add(hbox);
         }
-        final ListView<HBox> listView = new ListView<HBox>(productsList);
+        final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            Main.window.setScene(prev);
-        });
+        backButton.setOnAction(e -> Main.window.setScene(prev));
         showSellerProductLayout.getChildren().addAll(listView, backButton);
         Scene showSellerProductScene = new Scene(showSellerProductLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(showSellerProductScene);
@@ -187,9 +172,7 @@ public class SellerDashboard {
             }
         });
         Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            Main.window.setScene(prev);
-        });
+        backButton.setOnAction(e -> Main.window.setScene(prev));
         createProductLayout.getChildren().addAll(nameLabel, name, priceLabel, price, inventoryLabel, inventory);
         createProductLayout.getChildren().addAll(addButton, backButton, emptyLabel);
         Scene productView = new Scene(createProductLayout, Main.screenWidth, Main.screenHeight);
@@ -218,12 +201,10 @@ public class SellerDashboard {
                 productsList.add(hbox);
             }
         }
-        final ListView<HBox> listView = new ListView<HBox>(productsList);
+        final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            Main.window.setScene(prev);
-        });
+        backButton.setOnAction(e -> Main.window.setScene(prev));
         showUnverifiedLayout.getChildren().addAll(listView, backButton);
         Scene showUnverifiedScene = new Scene(showUnverifiedLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(showUnverifiedScene);

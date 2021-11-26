@@ -55,9 +55,7 @@ public class Register {
         });
         Button loginButton = new Button();
         loginButton.setText("login");
-        loginButton.setOnAction(e -> {
-            Main.window.setScene(Main.loginScene);
-        });
+        loginButton.setOnAction(e -> Main.window.setScene(Main.loginScene));
         registerLayout.getChildren().addAll(title, hbox, usernameLabel, username, passwordLabel, password);
         registerLayout.getChildren().addAll(verifyPasswordLabel, verifyPassword, registerButton, loginButton);
         registerLayout.setAlignment(Pos.CENTER);
@@ -85,9 +83,7 @@ public class Register {
         });
         Button registerButton = new Button();
         registerButton.setText("register");
-        registerButton.setOnAction(e -> {
-            Main.window.setScene(Main.registerScene);
-        });
+        registerButton.setOnAction(e -> Main.window.setScene(Main.registerScene));
         loginLayout.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, loginButton, registerButton);
         loginLayout.setAlignment(Pos.CENTER);
         Main.loginScene = new Scene(loginLayout, Main.screenWidth, Main.screenHeight);

@@ -20,21 +20,13 @@ public class AdminDashboard {
         adminDashboardLayout.setAlignment(Pos.CENTER);
         Label title = new Label("DashBoard");
         Button allUsersButton = new Button("Users");
-        allUsersButton.setOnAction(e -> {
-            showAllUsers(Main.adminDashboardScene);
-        });
+        allUsersButton.setOnAction(e -> showAllUsers(Main.adminDashboardScene));
         Button allSellersButton = new Button("Sellers");
-        allSellersButton.setOnAction(e -> {
-            showAllSellers(Main.adminDashboardScene);
-        });
+        allSellersButton.setOnAction(e -> showAllSellers(Main.adminDashboardScene));
         Button allPurchasesButton = new Button("all Purchases");
-        allPurchasesButton.setOnAction(e -> {
-            UserDashboard.showPurchases(Main.appData.purchases, Main.adminDashboardScene);
-        });
+        allPurchasesButton.setOnAction(e -> UserDashboard.showPurchases(Main.appData.purchases, Main.adminDashboardScene));
         Button logoutButton = new Button("logout");
-        logoutButton.setOnAction(e -> {
-            User.logout();
-        });
+        logoutButton.setOnAction(e -> User.logout());
         adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton, logoutButton);
         Main.adminDashboardScene = new Scene(adminDashboardLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.adminDashboardScene);
@@ -65,9 +57,7 @@ public class AdminDashboard {
         final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            Main.window.setScene(prev);
-        });
+        backButton.setOnAction(e -> Main.window.setScene(prev));
         showAllUsersLayout.getChildren().addAll(listView, backButton);
         Main.allUsersScene = new Scene(showAllUsersLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.allUsersScene);
@@ -92,9 +82,7 @@ public class AdminDashboard {
         final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button backButton = new Button("back");
-        backButton.setOnAction(e -> {
-            Main.window.setScene(prev);
-        });
+        backButton.setOnAction(e -> Main.window.setScene(prev));
         showAllSellersLayout.getChildren().addAll(listView, backButton);
         Main.allSellersScene = new Scene(showAllSellersLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.allSellersScene);

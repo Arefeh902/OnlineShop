@@ -52,15 +52,6 @@ public class Cart {
         System.out.println("product not found!");
     }
 
-    public void removeProduct(Product product){
-        for(CartProduct cartP: cartProducts){
-            if(cartP.equals(product)){
-                cartProducts.remove(cartP);
-                break;
-            }
-        }
-    }
-
     public void verifyCart(){
         for(CartProduct cartP: cartProducts){
             if(cartP.count > cartP.product.inventory){

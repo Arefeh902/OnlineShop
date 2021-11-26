@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public class Seller extends User {
 
-//    public ArrayList<Product> products;
-    private String password;
+    private final String password;
 
     public Seller(String username, String password) {
         super(username);

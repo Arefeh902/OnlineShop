@@ -1,10 +1,10 @@
 package online_shop.users;
 
 import online_shop.functionality.Main;
+import online_shop.shop.CartProduct;
+import online_shop.shop.CartProductStatus;
 import online_shop.shop.Purchase;
 import online_shop.shop.PurchaseStatus;
-
-import java.util.ArrayList;
 
 public class Admin {
 
@@ -12,7 +12,7 @@ public class Admin {
     Long id;
 
     public String username;
-    private String password;
+    private final String password;
 
 
     public Admin(String username, String password) {
@@ -49,17 +49,6 @@ public class Admin {
         return false;
     }
 
-    private static ArrayList<User> allUsers(){
-        ArrayList<User> users = new ArrayList<>();
-        for(User user: Main.appData.users){
-            users.add(user);
-        }
-        for(Seller seller: Main.appData.sellers){
-            users.add(seller);
-        }
-        return users;
-    }
-
     public void deleteUser(User user){
         user.delete();
         Main.appData.users.remove(user);
@@ -72,6 +61,12 @@ public class Admin {
 
     public void purchaseVerify(Purchase purchase){
         purchase.status = PurchaseStatus.VERIFIED;
+        for(CartProduct cartP: purchase.cart.cartProducts){
+            if(cartP.status == CartProductStatus.PENDING){
+                cartP.status = CartProductStatus.DELETED;
+                System.out.println(cartP.toString() + " was deleted due to seller's delay");
+            }
+        }
     }
 
     public void purchaseDelivering(Purchase purchase){
