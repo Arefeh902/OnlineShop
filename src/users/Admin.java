@@ -79,7 +79,7 @@ public class Admin {
         purchase.status = PurchaseStatus.DELIVERING;
     }
 
-    public void purchaseRecieved(Purchase purchase){
+    public void purchaseReceive(Purchase purchase){
         purchase.status = PurchaseStatus.RECEIVED;
     }
 

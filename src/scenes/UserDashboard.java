@@ -192,7 +192,7 @@ public class UserDashboard {
                 if(purchase.status == PurchaseStatus.DELIVERING){
                     Button receivedButton = new Button("received");
                     receivedButton.setOnAction(e -> {
-                        Main.appData.currentAdmin.purchaseRecieved(purchase);
+                        Main.appData.currentAdmin.purchaseReceive(purchase);
                         showPurchases(purchases, prev);
                     });
                     hbox.getChildren().add(receivedButton);
