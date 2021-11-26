@@ -6,6 +6,7 @@ import shop.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class User {
 
@@ -17,10 +18,10 @@ public class User {
     private String password;
 
     public Cart currentCart;
+    public Boolean isActive;
 //    public Cart nextCart;
 
 //    public ArrayList<Product> favouriteProducts;
-//    public ArrayList<Purchase> purchases;
 
     public User(String username, String password) {
         this.username = username;
@@ -28,6 +29,7 @@ public class User {
 
         this.currentCart = new Cart(this);
 
+        this.isActive = Boolean.TRUE;
 //        this.favouriteProducts = new ArrayList<>();
 //        this.purchases = new ArrayList<>();
 
@@ -50,7 +52,7 @@ public class User {
 
     public static User getByUsername(String username){
         for(User user: Main.appData.users){
-            if(user.username.equals(username)){
+            if(user.username.equals(username) && user.isActive){
                 return user;
             }
         }
@@ -59,12 +61,12 @@ public class User {
 
     public static Boolean isUsernameUnique(String username){
         for(User user: Main.appData.users){
-            if(user.username.equals(username)){
+            if(user.username.equals(username) && user.isActive){
                 return Boolean.FALSE;
             }
         }
         for(Seller seller: Main.appData.sellers){
-            if(seller.username.equals(username)){
+            if(seller.username.equals(username) && seller.isActive){
                 return Boolean.FALSE;
             }
         }
@@ -104,15 +106,9 @@ public class User {
         return purchases;
     }
 
+    public void delete(){
 
-
-
-
-
-
-
-
-
+    }
 
 
 

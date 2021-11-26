@@ -14,14 +14,7 @@ public class Seller extends User {
     public Seller(String username, String password) {
         super(username);
         this.password = password;
-//        this.products = new ArrayList<>();
     }
-//
-//    public void addProduct(String name, Long price, Long inventory){
-//        Product product = new Product(name, price, inventory);
-//        products.add(product);
-//        Main.appData.products.add(product);
-//    }
 
     public ArrayList<Product> getProducts(){
         ArrayList<Product> products = new ArrayList<>();
@@ -36,9 +29,11 @@ public class Seller extends User {
     public ArrayList<CartProduct> getUnverifiedProducts(){
         ArrayList<CartProduct> unverified = new ArrayList<>();
         for(Purchase purchase: Main.appData.purchases){
-            for(CartProduct cartP: purchase.cart.cartProducts){
-                if(cartP.product.seller.equals(Main.appData.currentSeller) && cartP.status == CartProductStatus.PENDING){
-                    unverified.add(cartP);
+            if(purchase.status.equals(PurchaseStatus.PENDING)) {
+                for (CartProduct cartP : purchase.cart.cartProducts) {
+                    if (cartP.product.seller.equals(Main.appData.currentSeller) && cartP.status == CartProductStatus.PENDING) {
+                        unverified.add(cartP);
+                    }
                 }
             }
         }
@@ -66,6 +61,29 @@ public class Seller extends User {
             }
         }
         return false;
+    }
+
+    public void delete(){
+        this.isActive = Boolean.FALSE;
+        for(Cart cart: Main.appData.carts){
+            if(cart.status == CartStatus.PENDING){
+                for(CartProduct cartP: cart.cartProducts){
+                    if(cartP.product.seller.equals(this)){
+                        cartP.status = CartProductStatus.DELETED;
+                    }
+                }
+            }
+        }
+        for(Product product: Main.appData.products){
+            if(product.seller.equals(this)){
+                for(Cart cart: Main.appData.carts){
+                    CartProduct cartP = cart.getCartProduct(product);
+                    if(cartP != null){
+                        cart.cartProducts.remove(cartP);
+                    }
+                }
+            }
+        }
     }
 
 }

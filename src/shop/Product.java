@@ -13,7 +13,7 @@ public class Product {
     public Long price;
     public Long inventory;
 
-    ProductStatus status;
+    public ProductStatus status;
 
     public Product(String name, Long price, Long inventory) {
         this.name = name;

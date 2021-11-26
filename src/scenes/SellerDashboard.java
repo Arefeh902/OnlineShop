@@ -14,11 +14,13 @@ import javafx.scene.layout.VBox;
 import shop.CartProduct;
 import shop.CartProductStatus;
 import shop.Product;
+import users.Admin;
 import users.User;
 
-public class SellerDashBoard {
+public class SellerDashboard {
 
     public static void sellerDashboard(){
+        Admin admin = Main.appData.currentAdmin;
         VBox sellerDashboardLayout = new VBox(Main.space);
         sellerDashboardLayout.setAlignment(Pos.CENTER);
         Label title = new Label("Dashboard");
@@ -26,24 +28,38 @@ public class SellerDashBoard {
         myProductsButton.setOnAction(e -> {
             showSellerProductsView(Main.sellerDashboardScene);
         });
+        sellerDashboardLayout.getChildren().add(myProductsButton);
         Button unverifiedProducts = new Button("unverified products");
         unverifiedProducts.setOnAction(e -> {
             showUnverifiedProducts(Main.sellerDashboardScene);
         });
+        sellerDashboardLayout.getChildren().add(unverifiedProducts);
         Button allProductsButton = new Button("all products");
         allProductsButton.setOnAction(e -> {
             UserDashboard.showAllProducts(Main.sellerDashboardScene);
         });
-        Button addProductButton = new Button("add product");
-        addProductButton.setOnAction(e -> {
-            createProductView(Main.sellerDashboardScene);
-        });
-        Button logoutButton = new Button("logout");
-        logoutButton.setOnAction(e -> {
-            User.logout();
-        });
-        sellerDashboardLayout.getChildren().addAll(title, myProductsButton, unverifiedProducts, allProductsButton);
-        sellerDashboardLayout.getChildren().addAll(addProductButton, logoutButton);
+        sellerDashboardLayout.getChildren().add(allProductsButton);
+        if(admin == null) {
+            Button addProductButton = new Button("add product");
+            addProductButton.setOnAction(e -> {
+                createProductView(Main.sellerDashboardScene);
+            });
+            sellerDashboardLayout.getChildren().add(addProductButton);
+        }
+        if(admin == null) {
+            Button logoutButton = new Button("logout");
+            logoutButton.setOnAction(e -> {
+                User.logout();
+            });
+            sellerDashboardLayout.getChildren().add(logoutButton);
+        }
+        if(admin != null){
+            Button backButton = new Button("back");
+            backButton.setOnAction(e -> {
+                AdminDashboard.adminDashboard();
+            });
+            sellerDashboardLayout.getChildren().add(backButton);
+        }
         Main.sellerDashboardScene = new Scene(sellerDashboardLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.sellerDashboardScene);
     }
@@ -185,19 +201,22 @@ public class SellerDashBoard {
         VBox showUnverifiedLayout = new VBox(Main.space);
         showUnverifiedLayout.setAlignment(Pos.CENTER);
         ObservableList<HBox> productsList = FXCollections.observableArrayList();
-        for(CartProduct cartP: Main.appData.currentSeller.getUnverifiedProducts()){
-            HBox hbox = new HBox(Main.space);
-            hbox.setAlignment(Pos.CENTER);
-            Label productLabel = new Label(cartP.product.toString());
-            Label priceLabel = new Label(cartP.price.toString());
-            Label countLabel = new Label(cartP.count.toString());
-            Button verifyButton = new Button("verify");
-            verifyButton.setOnAction(e -> {
-                cartP.status = CartProductStatus.VERIFIED;
-                showUnverifiedProducts(prev);
-            });
-            hbox.getChildren().addAll(productLabel, priceLabel, countLabel, verifyButton);
-            productsList.add(hbox);
+        System.out.println(Main.appData.currentSeller.toString());
+        if(Main.appData.currentSeller.getUnverifiedProducts() != null) {
+            for (CartProduct cartP : Main.appData.currentSeller.getUnverifiedProducts()) {
+                HBox hbox = new HBox(Main.space);
+                hbox.setAlignment(Pos.CENTER);
+                Label productLabel = new Label(cartP.product.toString());
+                Label priceLabel = new Label(cartP.price.toString());
+                Label countLabel = new Label(cartP.count.toString());
+                Button verifyButton = new Button("verify");
+                verifyButton.setOnAction(e -> {
+                    cartP.status = CartProductStatus.VERIFIED;
+                    showUnverifiedProducts(prev);
+                });
+                hbox.getChildren().addAll(productLabel, priceLabel, countLabel, verifyButton);
+                productsList.add(hbox);
+            }
         }
         final ListView<HBox> listView = new ListView<HBox>(productsList);
         listView.setMaxSize(350, 250);

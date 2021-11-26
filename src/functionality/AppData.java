@@ -6,9 +6,11 @@ import shop.Cart;
 import shop.Product;
 import shop.Purchase;
 import users.Admin;
+import users.Hash;
 import users.Seller;
 import users.User;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class AppData {
@@ -51,6 +53,12 @@ public class AppData {
     }
 
     public void createAdmin(String username, String password){
+        try{
+            password = Hash.bytesToHex(Hash.getSHA(password));
+        }catch (NoSuchAlgorithmException e){
+            System.out.println("there seems to be a problem");
+            System.out.println("" + e);
+        }
         Admin admin = new Admin(username, password);
         admins.add(admin);
     }

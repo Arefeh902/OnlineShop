@@ -8,11 +8,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shop.Cart;
-import shop.CartProduct;
-import shop.Product;
-import shop.Purchase;
+import shop.*;
 import users.User;
+
+import java.util.ArrayList;
 
 
 public class UserDashboard {
@@ -32,7 +31,7 @@ public class UserDashboard {
 //        });
         Button purchasesButton = new Button("purchases");
         purchasesButton.setOnAction(e -> {
-            showUserPurchases(Main.userDashboardScene);
+            showPurchases(Main.appData.currentUser.getPurchases(), Main.userDashboardScene);
         });
         Button allProducts = new Button("see all products");
         allProducts.setOnAction(e -> {
@@ -52,9 +51,9 @@ public class UserDashboard {
         if(Main.appData.currentUser != null){
             userDashboard();
         }else if(Main.appData.currentSeller != null){
-            SellerDashBoard.sellerDashboard();
+            SellerDashboard.sellerDashboard();
         }else if(Main.appData.currentAdmin != null){
-//            adminDashboard();
+            AdminDashboard.adminDashboard();
         }
     }
 
@@ -121,6 +120,10 @@ public class UserDashboard {
             Label priceLabel = new Label(cartP.product.price.toString());
             Label countLabel = new Label(cartP.count.toString());
             hbox.getChildren().addAll(productLabel, priceLabel, countLabel);
+            if(Main.appData.currentAdmin != null) {
+                Label verificationStatus = new Label(cartP.status.toString());
+                hbox.getChildren().add(verificationStatus);
+            }
             productsList.add(hbox);
         }
         final ListView<HBox> listView = new ListView<>(productsList);
@@ -134,7 +137,7 @@ public class UserDashboard {
         Main.window.setScene(showPurchaseScene);
     }
 
-    public static void showUserPurchases(Scene prev){
+    public static void showPurchases(ArrayList<Purchase> purchases, Scene prev){
         VBox showUserPurchasesLayout = new VBox(Main.space);
         showUserPurchasesLayout.setAlignment(Pos.CENTER);
         Label title = new Label("Cart");
@@ -147,18 +150,50 @@ public class UserDashboard {
         Label detailLabel = new Label("detail   ");
         headerHBox.getChildren().addAll(idLabel, totalPriceLabel, statusLabel, detailLabel);
         purchasesList.add(headerHBox);
-        for(Purchase purchase: Main.appData.currentUser.getPurchases()){
-            System.out.println("you should see this!");
+        for(Purchase purchase: purchases){
             HBox hbox = new HBox(Main.space);
             hbox.setAlignment(Pos.CENTER);
             Label id = new Label(purchase.getId().toString());
             Label totalPrice = new Label(purchase.totalPrice.toString());
             Label status = new Label(purchase.status.toString());
-            Button detailButton = new Button("detail");
-            detailButton.setOnAction(e -> {
-                System.out.println("will implement soon");
-            });
-            hbox.getChildren().addAll(id, totalPrice, status, detailButton);
+            hbox.getChildren().addAll(id, totalPrice, status);
+            if(Main.appData.currentUser != null){
+                Button detailButton = new Button("detail");
+                detailButton.setOnAction(e -> {
+                    showPurchase(purchase, prev);
+                });
+                hbox.getChildren().add(detailButton);
+            }else if(Main.appData.currentAdmin != null){
+                Button viewCartProductsStatus = new Button("view detail");
+                viewCartProductsStatus.setOnAction(e -> {
+                    showPurchase(purchase, prev);
+                });
+                hbox.getChildren().add(viewCartProductsStatus);
+                if(purchase.status == PurchaseStatus.PENDING){
+                    Button verifiedButton = new Button("verify");
+                    verifiedButton.setOnAction(e -> {
+                        Main.appData.currentAdmin.purchaseVerify(purchase);
+                        showPurchases(purchases, prev);
+                    });
+                    hbox.getChildren().add(verifiedButton);
+                }
+                if(purchase.status == PurchaseStatus.VERIFIED){
+                    Button deliveredButton = new Button("delivered");
+                    deliveredButton.setOnAction(e -> {
+                        Main.appData.currentAdmin.purchaseDelivering(purchase);
+                        showPurchases(purchases, prev);
+                    });
+                    hbox.getChildren().add(deliveredButton);
+                }
+                if(purchase.status == PurchaseStatus.DELIVERING){
+                    Button receivedButton = new Button("received");
+                    receivedButton.setOnAction(e -> {
+                        Main.appData.currentAdmin.purchaseRecieved(purchase);
+                        showPurchases(purchases, prev);
+                    });
+                    hbox.getChildren().add(receivedButton);
+                }
+            }
             purchasesList.add(hbox);
         }
         final ListView<HBox> listView = new ListView<>(purchasesList);
@@ -210,6 +245,8 @@ public class UserDashboard {
                     hbox.getChildren().addAll(decProduct, count, incProduct);
                 }
 
+            }else if(Main.appData.currentAdmin != null){
+                //
             }
             productsList.add(hbox);
         }
