@@ -32,7 +32,7 @@ public class SellerDashboard {
         unverifiedProducts.setOnAction(e -> showUnverifiedProducts(Main.sellerDashboardScene));
         sellerDashboardLayout.getChildren().add(unverifiedProducts);
         Button allProductsButton = new Button("all products");
-        allProductsButton.setOnAction(e -> UserDashboard.showAllProducts(Main.appData.products, Main.sellerDashboardScene));
+        allProductsButton.setOnAction(e -> UserDashboard.showAllProducts(Main.sellerDashboardScene));
         sellerDashboardLayout.getChildren().add(allProductsButton);
         if(admin == null) {
             Button addProductButton = new Button("add product");

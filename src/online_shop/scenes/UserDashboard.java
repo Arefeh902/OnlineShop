@@ -25,10 +25,8 @@ public class UserDashboard {
             Main.appData.currentUser.currentCart.verifyCart();
             displayCart(Main.appData.currentUser.currentCart, Main.userDashboardScene);
         });
-//        Button favouritesButton = new Button("favourites");
-//        favouritesButton.setOnAction(e -> {
-////            displayProducts(Main.appData.currentUser.favouriteProducts);
-//        });
+        Button favouritesButton = new Button("favourites");
+        favouritesButton.setOnAction(e -> showFavouriteProducts(Main.userDashboardScene));
         Button purchasesButton = new Button("purchases");
         purchasesButton.setOnAction(e -> {
             if(Main.appData.currentAdmin == null){
@@ -38,10 +36,10 @@ public class UserDashboard {
             }
         });
         Button allProducts = new Button("see all products");
-        allProducts.setOnAction(e -> showAllProducts(Main.appData.products, Main.userDashboardScene));
+        allProducts.setOnAction(e -> showAllProducts(Main.userDashboardScene));
         Button logoutButton = new Button("logout");
         logoutButton.setOnAction(e -> User.logout());
-        userDashboardLayout.getChildren().addAll(title, currentCartButton, purchasesButton, allProducts, logoutButton);
+        userDashboardLayout.getChildren().addAll(title, currentCartButton, favouritesButton, purchasesButton, allProducts, logoutButton);
         Main.userDashboardScene = new Scene(userDashboardLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.userDashboardScene);
     }
@@ -213,12 +211,12 @@ public class UserDashboard {
         Main.window.setScene(showUserPurchasesScene);
     }
 
-    public static void showAllProducts(ArrayList<Product> products, Scene prev){
+    public static void showAllProducts(Scene prev){
         VBox showAllProductsLayout = new VBox(Main.space);
         showAllProductsLayout.setAlignment(Pos.CENTER);
         Label title = new Label("all products");
         ObservableList<HBox> productsList = FXCollections.observableArrayList();
-        for(Product product: products){
+        for(Product product: Main.appData.products){
             HBox hbox = new HBox(Main.space);
             hbox.setAlignment(Pos.CENTER);
             Label name = new Label(product.name);
@@ -230,7 +228,7 @@ public class UserDashboard {
                     Button addToCart = new Button("add to cart");
                     addToCart.setOnAction(e -> {
                         Main.appData.currentUser.currentCart.addProduct(product);
-                        showAllProducts(Main.appData.products, prev);
+                        showAllProducts(prev);
                     });
                     hbox.getChildren().add(addToCart);
                 }else{
@@ -244,14 +242,28 @@ public class UserDashboard {
                     decProduct.setOnAction(e -> {
                         cart.removeOne(product);
                         if(!cart.hasProduct(product)){
-                            showAllProducts(Main.appData.products, prev);
+                            showAllProducts(prev);
                             return;
                         }
                         count.setText(cart.getCartProduct(product).count.toString());
                     });
                     hbox.getChildren().addAll(decProduct, count, incProduct);
                 }
-
+                if(Main.appData.currentUser.favouriteProducts.contains(product)){
+                    Button removeFavourite = new Button("\uD83C\uDF1F");
+                    removeFavourite.setOnAction(e -> {
+                        Main.appData.currentUser.removeFavourite(product);
+                        showAllProducts(prev);
+                    });
+                    hbox.getChildren().add(removeFavourite);
+                }else{
+                    Button addToFavourite = new Button("⭐");
+                    addToFavourite.setOnAction(e -> {
+                        Main.appData.currentUser.addFavourite(product);
+                        showAllProducts(prev);
+                    });
+                    hbox.getChildren().add(addToFavourite);
+                }
             }
             productsList.add(hbox);
         }
@@ -262,6 +274,44 @@ public class UserDashboard {
         showAllProductsLayout.getChildren().addAll(title, listView, backButton);
         Scene showAllProductsScene = new Scene(showAllProductsLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(showAllProductsScene);
+    }
+
+    public static void showFavouriteProducts(Scene prev){
+        VBox showFavouriteLayout = new VBox(Main.space);
+        showFavouriteLayout.setAlignment(Pos.CENTER);
+        Label title = new Label("favourites");
+        ObservableList<HBox> productsList = FXCollections.observableArrayList();
+        for(Product product: Main.appData.currentUser.favouriteProducts){
+            HBox hbox = new HBox(Main.space);
+            hbox.setAlignment(Pos.CENTER);
+            Label name = new Label(product.name);
+            Label price = new Label(product.price.toString());
+            hbox.getChildren().addAll(name, price);
+            if(Main.appData.currentUser != null){
+                Cart cart = Main.appData.currentUser.currentCart;
+                if(cart.getCartProduct(product) == null){
+                    Button addToCart = new Button("add to cart");
+                    addToCart.setOnAction(e -> {
+                        Main.appData.currentUser.currentCart.addProduct(product);
+                        showFavouriteProducts(prev);
+                    });
+                    Button removeFavourite = new Button("\uD83C\uDF1F");
+                    removeFavourite.setOnAction(e -> {
+                        Main.appData.currentUser.removeFavourite(product);
+                        showFavouriteProducts(prev);
+                    });
+                    hbox.getChildren().addAll(addToCart, removeFavourite);
+                }
+            }
+            productsList.add(hbox);
+        }
+        final ListView<HBox> listView = new ListView<>(productsList);
+        listView.setMaxSize(350, 250);
+        Button backButton = new Button("back");
+        backButton.setOnAction(e -> Main.window.setScene(prev));
+        showFavouriteLayout.getChildren().addAll(title, listView, backButton);
+        Scene showFavouriteLayoutScene = new Scene(showFavouriteLayout, Main.screenWidth, Main.screenHeight);
+        Main.window.setScene(showFavouriteLayoutScene);
     }
 
 }

@@ -40,6 +40,7 @@ public class Main extends Application{
     }
 
     public void createTestData(){
+        User.register(0, "1", "1", "1");
         appData.createAdmin("admin", "admin");
         User.register(0, "client", "client", "client");
         User.register(1, "seller", "seller", "seller");

@@ -18,7 +18,7 @@ public class User {
     public Boolean isActive;
 //    public Cart nextCart;
 
-//    public ArrayList<Product> favouriteProducts;
+    public ArrayList<Product> favouriteProducts;
 
     public User(String username, String password) {
         this.username = username;
@@ -27,8 +27,7 @@ public class User {
         this.currentCart = new Cart(this);
 
         this.isActive = Boolean.TRUE;
-//        this.favouriteProducts = new ArrayList<>();
-//        this.purchases = new ArrayList<>();
+        this.favouriteProducts = new ArrayList<>();
 
         this.id = helpId;
         helpId += 1;
@@ -39,8 +38,7 @@ public class User {
 
         this.currentCart = Main.appData.createCart(this);
 
-//        this.favouriteProducts = new ArrayList<>();
-//        this.purchases = new ArrayList<>();
+        this.favouriteProducts = new ArrayList<>();
 
         this.id = helpId;
         helpId += 1;
@@ -75,19 +73,13 @@ public class User {
         return Boolean.TRUE;
     }
 
-//    public void purchase(){
-//        Main.appData.createPurchase(currentCart);
-//        currentCart = nextCart;
-//        nextCart = Main.appData.createCart(this);
-//    }
-//
-//    public void addFavourite(Product product){
-//        favouriteProducts.add(product);
-//    }
-//
-//    public void removeFavourite(Product product){
-//        favouriteProducts.remove(product);
-//    }
+    public void addFavourite(Product product){
+        favouriteProducts.add(product);
+    }
+
+    public void removeFavourite(Product product){
+        favouriteProducts.remove(product);
+    }
 
     public ArrayList<Purchase> getPurchases(){
         ArrayList<Purchase> purchases = new ArrayList<>();
