@@ -136,7 +136,16 @@ public class UserDashboard {
         backButton.setOnAction(e -> {
             Main.window.setScene(prev);
         });
-        showPurchaseLayout.getChildren().addAll(purchaseData, listView, backButton);
+        showPurchaseLayout.getChildren().addAll(purchaseData, listView);
+        if(Main.appData.currentAdmin != null){
+            Button verifiedButton = new Button("verify");
+            verifiedButton.setOnAction(e -> {
+                Main.appData.currentAdmin.purchaseVerify(purchase);
+                showPurchase(purchase, prev);
+            });
+            showPurchaseLayout.getChildren().add(verifiedButton);
+        }
+        showPurchaseLayout.getChildren().add(backButton);
         Scene showPurchaseScene = new Scene(showPurchaseLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(showPurchaseScene);
     }

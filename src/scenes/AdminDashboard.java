@@ -51,7 +51,7 @@ public class AdminDashboard {
             Button seePurchases = new Button("purchases");
             seePurchases.setOnAction(e -> {
                 Main.appData.currentUser = user;
-                UserDashboard.showPurchases(user.getPurchases(), Main.adminDashboardScene);
+                UserDashboard.showPurchases(user.getPurchases(), Main.allUsersScene);
                 Main.appData.currentUser = null;
             });
             Button deleteButton = new Button("delete");
