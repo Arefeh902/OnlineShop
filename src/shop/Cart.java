@@ -11,12 +11,12 @@ public class Cart {
     static Long helpId = 1L;
     Long id;
 
-    User client;
+    public User user;
     public ArrayList<CartProduct> cartProducts;
     public CartStatus status;
 
     public Cart(User user) {
-        this.client = user;
+        this.user = user;
         this.cartProducts = new ArrayList<>();
         this.status = CartStatus.PENDING;
 
@@ -25,6 +25,8 @@ public class Cart {
     }
 
     public void addProduct(Product product){
+        if(status == CartStatus.PURCHASED)
+            return;
         for(CartProduct cartP: this.cartProducts){
             if(cartP.product.equals(product)){
                 cartP.incCount();
@@ -40,6 +42,8 @@ public class Cart {
     }
 
     public void removeOne(Product product){
+        if(status == CartStatus.PURCHASED)
+            return;
         for(CartProduct cartP: this.cartProducts){
             if(cartP.product.equals(product)){
                 cartP.decCount();
@@ -59,7 +63,13 @@ public class Cart {
     }
 
     public void verifyCart(){
-
+        for(CartProduct cartP: cartProducts){
+            if(cartP.count > cartP.product.inventory){
+                System.out.println("validation error");
+                System.out.println("product is removed");
+                cartProducts.remove(cartP);
+            }
+        }
     }
 
     public CartProduct getCartProduct(Product product){
@@ -78,6 +88,13 @@ public class Cart {
             }
         }
         return Boolean.FALSE;
+    }
+
+    public Purchase purchase(){
+        status = CartStatus.PURCHASED;
+        Purchase p = Main.appData.createPurchase(this);
+        Main.appData.currentUser.currentCart = Main.appData.createCart(Main.appData.currentUser);
+        return p;
     }
 
 }

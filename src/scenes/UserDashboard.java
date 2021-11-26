@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import shop.Cart;
 import shop.CartProduct;
 import shop.Product;
+import shop.Purchase;
 import users.User;
 
 
@@ -31,7 +32,7 @@ public class UserDashboard {
         });
         Button purchasesButton = new Button("purchases");
         purchasesButton.setOnAction(e -> {
-            //TODO
+            showUserPurchases(Main.userDashboardScene);
         });
         Button allProducts = new Button("see all products");
         allProducts.setOnAction(e -> {
@@ -56,7 +57,6 @@ public class UserDashboard {
 //            adminDashboard();
         }
     }
-
 
     public static void displayCart(Cart cart, Scene prev){
         VBox displayCartLayout = new VBox(Main.space);
@@ -86,13 +86,13 @@ public class UserDashboard {
             hbox.getChildren().addAll(productLabel, priceLabel, decProduct, countLabel, incProduct);
             productsList.add(hbox);
         }
-        final ListView<HBox> listView = new ListView<HBox>(productsList);
+        final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button purchaseButton = new Button("purchase");
         purchaseButton.setOnAction(e -> {
-            //
-            //
-            //
+            if(cart.cartProducts.size() != 0){
+                showPurchase(cart.purchase(), prev);
+            }
         });
         Button backButton = new Button("back");
         backButton.setOnAction(e -> {
@@ -103,28 +103,74 @@ public class UserDashboard {
         Main.window.setScene(displayCartScene);
     }
 
-
-    public static void displayCartProduct(CartProduct cartP){
-        VBox displayProductLayout = new VBox(Main.space);
-        displayProductLayout.setAlignment(Pos.CENTER);
-        Label name = new Label(cartP.product.name);
-        Label price = new Label(cartP.product.price.toString());
-        Label count = new Label(cartP.count.toString());
-        Button addButton = new Button("+");
-        addButton.setOnAction(e -> {
-            cartP.incCount();
+    public static void showPurchase(Purchase purchase, Scene prev){
+        VBox showPurchaseLayout = new VBox(Main.space);
+        showPurchaseLayout.setAlignment(Pos.CENTER);
+        Label idLabel = new Label(purchase.getId().toString());
+        Label productCountLabel = new Label(purchase.productCount.toString());
+        Label totalPriceLabel = new Label(purchase.totalPrice.toString());
+        Label statusLabel = new Label(purchase.status.toString());
+        HBox purchaseData = new HBox(Main.space);
+        purchaseData.setAlignment(Pos.CENTER);
+        purchaseData.getChildren().addAll(idLabel, productCountLabel, totalPriceLabel, statusLabel);
+        ObservableList<HBox> productsList = FXCollections.observableArrayList();
+        for(CartProduct cartP: purchase.cart.cartProducts){
+            HBox hbox = new HBox(Main.space);
+            hbox.setAlignment(Pos.CENTER);
+            Label productLabel = new Label(cartP.product.toString());
+            Label priceLabel = new Label(cartP.product.price.toString());
+            Label countLabel = new Label(cartP.count.toString());
+            hbox.getChildren().addAll(productLabel, priceLabel, countLabel);
+            productsList.add(hbox);
+        }
+        final ListView<HBox> listView = new ListView<>(productsList);
+        listView.setMaxSize(350, 250);
+        Button backButton = new Button("back");
+        backButton.setOnAction(e -> {
+            Main.window.setScene(prev);
         });
-        Button removeOneButton = new Button("-");
-        removeOneButton.setOnAction(e -> {
-            cartP.decCount();
-        });
-        Button removeButton = new Button("remove");
-        removeButton.setOnAction(e -> {
-            cartP.cart.removeProduct(cartP.product);
-
-        });
+        showPurchaseLayout.getChildren().addAll(purchaseData, listView, backButton);
+        Scene showPurchaseScene = new Scene(showPurchaseLayout, Main.screenWidth, Main.screenHeight);
+        Main.window.setScene(showPurchaseScene);
     }
 
+    public static void showUserPurchases(Scene prev){
+        VBox showUserPurchasesLayout = new VBox(Main.space);
+        showUserPurchasesLayout.setAlignment(Pos.CENTER);
+        Label title = new Label("Cart");
+        ObservableList<HBox> purchasesList = FXCollections.observableArrayList();
+        HBox headerHBox = new HBox(Main.space);
+        headerHBox.setAlignment(Pos.CENTER);
+        Label idLabel = new Label("id      ");
+        Label totalPriceLabel = new Label("total price  ");
+        Label statusLabel = new Label("status   ");
+        Label detailLabel = new Label("detail   ");
+        headerHBox.getChildren().addAll(idLabel, totalPriceLabel, statusLabel, detailLabel);
+        purchasesList.add(headerHBox);
+        for(Purchase purchase: Main.appData.currentUser.getPurchases()){
+            System.out.println("you should see this!");
+            HBox hbox = new HBox(Main.space);
+            hbox.setAlignment(Pos.CENTER);
+            Label id = new Label(purchase.getId().toString());
+            Label totalPrice = new Label(purchase.totalPrice.toString());
+            Label status = new Label(purchase.status.toString());
+            Button detailButton = new Button("detail");
+            detailButton.setOnAction(e -> {
+                System.out.println("will implement soon");
+            });
+            hbox.getChildren().addAll(id, totalPrice, status, detailButton);
+            purchasesList.add(hbox);
+        }
+        final ListView<HBox> listView = new ListView<>(purchasesList);
+        listView.setMaxSize(350, 250);
+        Button backButton = new Button("back");
+        backButton.setOnAction(e -> {
+            Main.window.setScene(prev);
+        });
+        showUserPurchasesLayout.getChildren().addAll(title, listView, backButton);
+        Scene showUserPurchasesScene = new Scene(showUserPurchasesLayout, Main.screenWidth, Main.screenHeight);
+        Main.window.setScene(showUserPurchasesScene);
+    }
 
     public static void showAllProducts(Scene prev){
         VBox showAllProductsLayout = new VBox(Main.space);

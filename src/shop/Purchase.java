@@ -5,10 +5,10 @@ public class Purchase {
     Long helpId = 1L;
     Long id;
 
-    Cart cart;
-    Long productCount;
-    Long totalPrice;
-    PurchaseStatus status;
+    public Cart cart;
+    public Long productCount;
+    public Long totalPrice;
+    public PurchaseStatus status;
 
     public Purchase(Cart cart) {
         this.cart = cart;
@@ -22,8 +22,14 @@ public class Purchase {
         }
         status = PurchaseStatus.PENDING;
 
+        System.out.println("purchase created!");
+
         id = helpId;
         helpId += 1;
+    }
+
+    public Long getId(){
+        return id;
     }
 
 }

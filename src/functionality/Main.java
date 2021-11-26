@@ -45,7 +45,7 @@ public class Main extends Application{
         User.logout();
         User.register(0, "4", "4", "4");
         User.login("4", "4");
-//        createScenes();
+        createScenes();
         window.setTitle("Online Shop");
 //        window.setScene(registerScene);
         window.show();

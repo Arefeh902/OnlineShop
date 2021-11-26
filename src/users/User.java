@@ -17,10 +17,10 @@ public class User {
     private String password;
 
     public Cart currentCart;
-    public Cart nextCart;
+//    public Cart nextCart;
 
-    public ArrayList<Product> favouriteProducts;
-    ArrayList<Purchase> purchases;
+//    public ArrayList<Product> favouriteProducts;
+//    public ArrayList<Purchase> purchases;
 
     public User(String username, String password) {
         this.username = username;
@@ -28,8 +28,8 @@ public class User {
 
         this.currentCart = new Cart(this);
 
-        this.favouriteProducts = new ArrayList<>();
-        this.purchases = new ArrayList<>();
+//        this.favouriteProducts = new ArrayList<>();
+//        this.purchases = new ArrayList<>();
 
         this.id = helpId;
         helpId += 1;
@@ -40,8 +40,8 @@ public class User {
 
         this.currentCart = Main.appData.createCart(this);
 
-        this.favouriteProducts = new ArrayList<>();
-        this.purchases = new ArrayList<>();
+//        this.favouriteProducts = new ArrayList<>();
+//        this.purchases = new ArrayList<>();
 
         this.id = helpId;
         helpId += 1;
@@ -76,24 +76,33 @@ public class User {
         return Boolean.TRUE;
     }
 
-    public void purchase(){
-        Main.appData.createPurchase(currentCart);
-        currentCart = nextCart;
-        nextCart = Main.appData.createCart(this);
-    }
-
-    public void addFavourite(Product product){
-        favouriteProducts.add(product);
-    }
-
-    public void removeFavourite(Product product){
-        favouriteProducts.remove(product);
-    }
+//    public void purchase(){
+//        Main.appData.createPurchase(currentCart);
+//        currentCart = nextCart;
+//        nextCart = Main.appData.createCart(this);
+//    }
+//
+//    public void addFavourite(Product product){
+//        favouriteProducts.add(product);
+//    }
+//
+//    public void removeFavourite(Product product){
+//        favouriteProducts.remove(product);
+//    }
 
     public void addProductCurrentCart(Product product){
         currentCart.addProduct(product);
     }
 
+    public ArrayList<Purchase> getPurchases(){
+        ArrayList<Purchase> purchases = new ArrayList<>();
+        for(Purchase purchase: Main.appData.purchases){
+            if(purchase.cart.user.equals(this)){
+                purchases.add(purchase);
+            }
+        }
+        return purchases;
+    }
 
 
 
