@@ -5,12 +5,9 @@ import shop.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.TreeMap;
 
 public class User {
 
-    static Scanner scanner = new Scanner(System.in);
     static Long helpId = 1L;
     Long id;
 
@@ -92,10 +89,6 @@ public class User {
 //        favouriteProducts.remove(product);
 //    }
 
-    public void addProductCurrentCart(Product product){
-        currentCart.addProduct(product);
-    }
-
     public ArrayList<Purchase> getPurchases(){
         ArrayList<Purchase> purchases = new ArrayList<>();
         for(Purchase purchase: Main.appData.purchases){
@@ -107,10 +100,12 @@ public class User {
     }
 
     public void delete(){
-
+        for(Cart cart: Main.appData.carts){
+            if(cart.user.equals(this)){
+                cart.status = CartStatus.DELETED;
+            }
+        }
     }
-
-
 
     public static Boolean register(int userType, String username, String password, String verifyPassword){
         if(!User.isUsernameUnique(username)){

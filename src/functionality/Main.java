@@ -41,15 +41,11 @@ public class Main extends Application{
         User.register(0, "4", "4", "4");
         User.register(0, "test user", "4", "4");
         User.register(0, "hello", "4", "4");
-//        User.login("4", "4");
         createScenes();
         appData.createAdmin("5", "5");
-        for(Admin a: appData.admins)
-            System.out.println(a.username.toString());
         window.setTitle("Online Shop");
-//        window.setScene(registerScene);
+        window.setScene(registerScene);
         window.show();
-//        UserDashboard.userDashboard();
     }
 
     public void createScenes(){

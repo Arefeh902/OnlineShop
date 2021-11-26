@@ -29,7 +29,7 @@ public class Seller extends User {
     public ArrayList<CartProduct> getUnverifiedProducts(){
         ArrayList<CartProduct> unverified = new ArrayList<>();
         for(Purchase purchase: Main.appData.purchases){
-            if(purchase.status.equals(PurchaseStatus.PENDING)) {
+            if(purchase.status.equals(PurchaseStatus.PENDING) && purchase.cart.status != CartStatus.DELETED) {
                 for (CartProduct cartP : purchase.cart.cartProducts) {
                     if (cartP.product.seller.equals(Main.appData.currentSeller) && cartP.status == CartProductStatus.PENDING) {
                         unverified.add(cartP);

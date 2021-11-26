@@ -31,7 +31,11 @@ public class UserDashboard {
 //        });
         Button purchasesButton = new Button("purchases");
         purchasesButton.setOnAction(e -> {
-            showPurchases(Main.appData.currentUser.getPurchases(), Main.userDashboardScene);
+            if(Main.appData.currentAdmin == null){
+                showPurchases(Main.appData.currentUser.getPurchases(), Main.userDashboardScene);
+            }else{
+                showPurchases(Main.appData.currentUser.getPurchases(), Main.adminDashboardScene);
+            }
         });
         Button allProducts = new Button("see all products");
         allProducts.setOnAction(e -> {
@@ -245,8 +249,6 @@ public class UserDashboard {
                     hbox.getChildren().addAll(decProduct, count, incProduct);
                 }
 
-            }else if(Main.appData.currentAdmin != null){
-                //
             }
             productsList.add(hbox);
         }

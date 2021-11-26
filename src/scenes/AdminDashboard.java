@@ -10,12 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import shop.Product;
-import shop.Purchase;
 import users.Seller;
 import users.User;
-
-import java.util.ArrayList;
 
 public class AdminDashboard {
 
@@ -35,8 +31,11 @@ public class AdminDashboard {
         allPurchasesButton.setOnAction(e -> {
             UserDashboard.showPurchases(Main.appData.purchases, Main.adminDashboardScene);
         });
-
-        adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton);
+        Button logoutButton = new Button("logout");
+        logoutButton.setOnAction(e -> {
+            User.logout();
+        });
+        adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton, logoutButton);
         Main.adminDashboardScene = new Scene(adminDashboardLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.adminDashboardScene);
     }
@@ -51,7 +50,9 @@ public class AdminDashboard {
             Label nameLabel = new Label(user.username);
             Button seePurchases = new Button("purchases");
             seePurchases.setOnAction(e -> {
-                UserDashboard.showPurchases(user.getPurchases(), Main.userDashboardScene);
+                Main.appData.currentUser = user;
+                UserDashboard.showPurchases(user.getPurchases(), Main.adminDashboardScene);
+                Main.appData.currentUser = null;
             });
             Button deleteButton = new Button("delete");
             deleteButton.setOnAction(e -> {
@@ -61,7 +62,7 @@ public class AdminDashboard {
             hbox.getChildren().addAll(nameLabel, seePurchases, deleteButton);
             productsList.add(hbox);
         }
-        final ListView<HBox> listView = new ListView<HBox>(productsList);
+        final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button backButton = new Button("back");
         backButton.setOnAction(e -> {
@@ -88,7 +89,7 @@ public class AdminDashboard {
             hbox.getChildren().addAll(nameLabel, deleteButton);
             productsList.add(hbox);
         }
-        final ListView<HBox> listView = new ListView<HBox>(productsList);
+        final ListView<HBox> listView = new ListView<>(productsList);
         listView.setMaxSize(350, 250);
         Button backButton = new Button("back");
         backButton.setOnAction(e -> {
