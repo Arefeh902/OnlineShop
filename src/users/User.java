@@ -1,10 +1,7 @@
 package users;
 
 import functionality.Main;
-import shop.Cart;
-import shop.CartStatus;
-import shop.Product;
-import shop.Purchase;
+import shop.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -30,7 +27,6 @@ public class User {
         this.password = password;
 
         this.currentCart = new Cart(this);
-        this.nextCart = new Cart(this);
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
@@ -43,7 +39,6 @@ public class User {
         this.username = username;
 
         this.currentCart = Main.appData.createCart(this);
-        this.nextCart = Main.appData.createCart(this);
 
         this.favouriteProducts = new ArrayList<>();
         this.purchases = new ArrayList<>();
@@ -95,25 +90,10 @@ public class User {
         favouriteProducts.remove(product);
     }
 
-    public void addProductCurrentCart(Product product, Long count){
-        currentCart.addProduct(product, count);
-    }
-
     public void addProductCurrentCart(Product product){
-        currentCart.addProduct(product, 1L);
+        currentCart.addProduct(product);
     }
 
-    public void editProductCurrentCart(Product product, Long count){
-
-    }
-
-    public void addProductNextCart(Product product, Long count){
-        nextCart.addProduct(product, count);
-    }
-
-    public void addProductNextCart(Product product){
-        nextCart.addProduct(product, 1L);
-    }
 
 
 

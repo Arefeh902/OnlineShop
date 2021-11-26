@@ -12,14 +12,30 @@ public class CartProduct {
     public Long count;
     public CartProductStatus status;
 
-    public CartProduct(Cart cart, Product product, Long count) {
+    public CartProduct(Cart cart, Product product) {
         this.cart = cart;
         this.product = product;
-        this.count = count;
+        this.count = 1L;
 
         status = CartProductStatus.PENDING;
 
         id = helpId;
         helpId += 1;
+    }
+
+    public Boolean incCount(){
+        if(this.count < this.product.inventory){
+            count += 1;
+            return Boolean.TRUE;
+        }
+        System.out.println("not enough products!");
+        return Boolean.FALSE;
+    }
+
+    public void decCount(){
+        this.count -= 1;
+        if(this.count == 0){
+            this.cart.cartProducts.remove(this);
+        }
     }
 }

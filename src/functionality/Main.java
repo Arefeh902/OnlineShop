@@ -43,10 +43,18 @@ public class Main extends Application{
         appData.createProduct("product3", 5365L, 13L);
         window = primaryStage;
         User.logout();
+        User.register(0, "4", "4", "4");
+        User.login("4", "4");
+//        createScenes();
         window.setTitle("Online Shop");
-        Register.register();
+//        window.setScene(registerScene);
         window.show();
-//        UserDashboard.sellerDashboard();
+        UserDashboard.userDashboard();
+    }
+
+    public void createScenes(){
+        Register.register();
+        Register.login();
     }
 
 }

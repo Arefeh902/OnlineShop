@@ -24,28 +24,60 @@ public class Cart {
         helpId += 1;
     }
 
-    public void addProduct(Product product, Long count){
-        if(count > product.inventory){
+    public void addProduct(Product product){
+        for(CartProduct cartP: this.cartProducts){
+            if(cartP.product.equals(product)){
+                cartP.incCount();
+                return;
+            }
+        }
+        if(product.inventory == 0L){
             System.out.println("Invalid number of Items, Total of " + product.inventory + " are left");
             return;
         }
-        CartProduct cartProduct = new CartProduct(this, product, count);
+        CartProduct cartProduct = new CartProduct(this, product);
+        cartProducts.add(cartProduct);
     }
 
-    public void editProduct(Product product, Long count){
+    public void removeOne(Product product){
+        for(CartProduct cartP: this.cartProducts){
+            if(cartP.product.equals(product)){
+                cartP.decCount();
+                return;
+            }
+        }
+        System.out.println("product not found!");
+    }
+
+    public void removeProduct(Product product){
         for(CartProduct cartP: cartProducts){
             if(cartP.equals(product)){
-                if(count == 0){
-                    cartProducts.remove(cartP);
-                    break;
-                }
-                cartP.count = count;
+                cartProducts.remove(cartP);
+                break;
             }
         }
     }
 
-    public void removeProduct(Product product){
-        editProduct(product, 0L);
+    public void verifyCart(){
+
+    }
+
+    public CartProduct getCartProduct(Product product){
+        for(CartProduct cartP: cartProducts){
+            if(cartP.product.equals(product)){
+                return cartP;
+            }
+        }
+        return null;
+    }
+
+    public Boolean hasProduct(Product product){
+        for(CartProduct cartP: cartProducts){
+            if(cartP.product.equals(product)){
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
 
 }

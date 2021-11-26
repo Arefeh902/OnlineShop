@@ -59,7 +59,7 @@ public class Register {
         Button loginButton = new Button();
         loginButton.setText("login");
         loginButton.setOnAction(e -> {
-            login();
+            Main.window.setScene(Main.loginScene);
         });
         registerLayout.getChildren().addAll(title, hbox, usernameLabel, username, passwordLabel, password);
         registerLayout.getChildren().addAll(verifyPasswordLabel, verifyPassword, registerButton, loginButton);
@@ -89,7 +89,7 @@ public class Register {
         Button registerButton = new Button();
         registerButton.setText("register");
         registerButton.setOnAction(e -> {
-            register();
+            Main.window.setScene(Main.registerScene);
         });
         loginLayout.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, loginButton, registerButton);
         loginLayout.setAlignment(Pos.CENTER);
