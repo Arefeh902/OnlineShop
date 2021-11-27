@@ -279,7 +279,7 @@ public class UserDashboard {
     public static void showFavouriteProducts(Scene prev){
         VBox showFavouriteLayout = new VBox(Main.space);
         showFavouriteLayout.setAlignment(Pos.CENTER);
-        Label title = new Label("favourites");
+        Label title = new Label("favourite");
         ObservableList<HBox> productsList = FXCollections.observableArrayList();
         for(Product product: Main.appData.currentUser.favouriteProducts){
             HBox hbox = new HBox(Main.space);
@@ -287,22 +287,38 @@ public class UserDashboard {
             Label name = new Label(product.name);
             Label price = new Label(product.price.toString());
             hbox.getChildren().addAll(name, price);
-            if(Main.appData.currentUser != null){
-                Cart cart = Main.appData.currentUser.currentCart;
-                if(cart.getCartProduct(product) == null){
-                    Button addToCart = new Button("add to cart");
-                    addToCart.setOnAction(e -> {
-                        Main.appData.currentUser.currentCart.addProduct(product);
+            Cart cart = Main.appData.currentUser.currentCart;
+            if(cart.getCartProduct(product) == null){
+                Button addToCart = new Button("add to cart");
+                addToCart.setOnAction(e -> {
+                    Main.appData.currentUser.currentCart.addProduct(product);
+                    showFavouriteProducts(prev);
+                });
+                hbox.getChildren().add(addToCart);
+            }else{
+                Label count = new Label(cart.getCartProduct(product).count.toString());
+                Button incProduct = new Button("+");
+                incProduct.setOnAction(e -> {
+                    cart.addProduct(product);
+                    count.setText(cart.getCartProduct(product).count.toString());
+                });
+                Button decProduct = new Button("-");
+                decProduct.setOnAction(e -> {
+                    cart.removeOne(product);
+                    if(!cart.hasProduct(product)){
                         showFavouriteProducts(prev);
-                    });
-                    Button removeFavourite = new Button("\uD83C\uDF1F");
-                    removeFavourite.setOnAction(e -> {
-                        Main.appData.currentUser.removeFavourite(product);
-                        showFavouriteProducts(prev);
-                    });
-                    hbox.getChildren().addAll(addToCart, removeFavourite);
-                }
+                        return;
+                    }
+                    count.setText(cart.getCartProduct(product).count.toString());
+                });
+                hbox.getChildren().addAll(decProduct, count, incProduct);
             }
+            Button removeFavourite = new Button("\uD83C\uDF1F");
+            removeFavourite.setOnAction(e -> {
+                Main.appData.currentUser.removeFavourite(product);
+                showFavouriteProducts(prev);
+            });
+            hbox.getChildren().addAll(removeFavourite);
             productsList.add(hbox);
         }
         final ListView<HBox> listView = new ListView<>(productsList);

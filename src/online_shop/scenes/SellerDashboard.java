@@ -179,7 +179,6 @@ public class SellerDashboard {
         Main.window.setScene(productView);
     }
 
-
     public static void showUnverifiedProducts(Scene prev){
         VBox showUnverifiedLayout = new VBox(Main.space);
         showUnverifiedLayout.setAlignment(Pos.CENTER);
