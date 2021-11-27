@@ -46,23 +46,20 @@ public class Register {
         Label emptyLabel = new Label("");
         Button registerButton = new Button("register");
         registerButton.setOnAction(e -> {
-            if(User.register(userType, username.getText(), password.getText(), verifyPassword.getText())){
-                emptyLabel.setText("");
+            if(!User.isUsernameUnique(username.getText())) {
+                emptyLabel.setText("Username must be unique");
                 username.clear();
                 password.clear();
                 verifyPassword.clear();
-                Main.window.setScene(Main.loginScene);
+            }else if(password.getText().equals("")){
+                emptyLabel.setText("please enter a password");
+            }else if(!password.getText().equals(verifyPassword.getText())){
+                emptyLabel.setText("passwords didn't match, try again!");
+                password.clear();
+                verifyPassword.clear();
             }else{
-                if(!User.isUsernameUnique(username.getText())){
-                    emptyLabel.setText("Username must be unique");
-                    username.clear();
-                    password.clear();
-                    verifyPassword.clear();
-                }else{
-                    emptyLabel.setText("passwords didn't match, try again!");
-                    password.clear();
-                    verifyPassword.clear();
-                }
+                User.register(userType, username.getText(), password.getText());
+                Main.window.setScene(Main.loginScene);
             }
         });
         Button loginButton = new Button("login");

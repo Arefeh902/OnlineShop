@@ -18,8 +18,7 @@ public class Admin {
     public Admin(String username, String password) {
         this.username = username;
         this.password = password;
-        System.out.println(username);
-        System.out.println(password);
+
         id = helpId;
         helpId += 1;
     }
@@ -67,6 +66,10 @@ public class Admin {
                 System.out.println(cartP.toString() + " was deleted due to seller's delay");
             }
         }
+    }
+
+    public void createAdmin(String username, String password){
+        Main.appData.createAdmin(username, password);
     }
 
     public void purchaseDelivering(Purchase purchase){

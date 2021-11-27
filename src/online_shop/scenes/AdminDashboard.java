@@ -1,5 +1,6 @@
 package online_shop.scenes;
 
+import javafx.scene.control.TextField;
 import online_shop.functionality.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,9 +28,13 @@ public class AdminDashboard {
         allPurchasesButton.setOnAction(e -> UserDashboard.showPurchases(Main.appData.purchases, Main.adminDashboardScene));
         Button allProductsButton = new Button("all products");
         allProductsButton.setOnAction(e -> UserDashboard.showAllProducts(Main.adminDashboardScene));
+        Button addAdminButton = new Button("add admin");
+        addAdminButton.setOnAction(e -> {
+            addAdminView();
+        });
         Button logoutButton = new Button("logout");
         logoutButton.setOnAction(e -> User.logout());
-        adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton, allProductsButton, logoutButton);
+        adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton, allProductsButton, addAdminButton, logoutButton);
         Main.adminDashboardScene = new Scene(adminDashboardLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.adminDashboardScene);
     }
@@ -88,6 +93,44 @@ public class AdminDashboard {
         showAllSellersLayout.getChildren().addAll(listView, backButton);
         Main.allSellersScene = new Scene(showAllSellersLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.allSellersScene);
+    }
+
+    public static void addAdminView(){
+        VBox addAdminLayout = new VBox(Main.space);
+        addAdminLayout.setAlignment(Pos.CENTER);
+        Label usernameLabel = new Label("Enter username");
+        TextField username = new TextField();
+        username.setMaxWidth((float)Main.screenWidth/4);
+        Label passwordLabel = new Label("Enter password");
+        TextField password = new TextField();
+        password.setMaxWidth((float)Main.screenWidth/4);
+        Label verifyPasswordLabel = new Label("Enter password again");
+        TextField verifyPassword = new TextField();
+        verifyPassword.setMaxWidth((float)Main.screenWidth/4);
+        Label emptyLabel = new Label("");
+        Button createButton = new Button("create");
+        createButton.setOnAction(e -> {
+            if(!User.isUsernameUnique(username.getText())) {
+                emptyLabel.setText("Username must be unique");
+                username.clear();
+                password.clear();
+                verifyPassword.clear();
+            }else if(password.getText().equals("")){
+                emptyLabel.setText("please enter a password");
+            }else if(!password.getText().equals(verifyPassword.getText())){
+                emptyLabel.setText("passwords didn't match, try again!");
+                password.clear();
+                verifyPassword.clear();
+            }else{
+                Main.appData.currentAdmin.createAdmin(username.getText(), password.getText());
+                Main.window.setScene(Main.adminDashboardScene);
+                System.out.println("created admin successfully");
+            }
+        });
+        addAdminLayout.getChildren().addAll(usernameLabel, username, passwordLabel, password, verifyPasswordLabel);
+        addAdminLayout.getChildren().addAll(verifyPassword, emptyLabel, createButton);
+        Scene addAdminScene = new Scene(addAdminLayout, Main.screenWidth, Main.screenHeight);
+        Main.window.setScene(addAdminScene);
     }
 
 }

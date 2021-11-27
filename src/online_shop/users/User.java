@@ -99,13 +99,7 @@ public class User {
         }
     }
 
-    public static Boolean register(int userType, String username, String password, String verifyPassword){
-        if(!User.isUsernameUnique(username)){
-            return Boolean.FALSE;
-        }
-        if(!password.equals(verifyPassword)){
-            return Boolean.FALSE;
-        }
+    public static Boolean register(int userType, String username, String password){
         try{
             password = Hash.bytesToHex(Hash.getSHA(password));
         }catch (NoSuchAlgorithmException e){
