@@ -264,6 +264,10 @@ public class UserDashboard {
                     });
                     hbox.getChildren().add(addToFavourite);
                 }
+            }else if(Main.appData.currentAdmin != null){
+                Button editButton = new Button("edit");
+                editButton.setOnAction(e -> SellerDashboard.editProductView(product));
+                hbox.getChildren().add(editButton);
             }
             productsList.add(hbox);
         }
@@ -272,8 +276,8 @@ public class UserDashboard {
         Button backButton = new Button("back");
         backButton.setOnAction(e -> Main.window.setScene(prev));
         showAllProductsLayout.getChildren().addAll(title, listView, backButton);
-        Scene showAllProductsScene = new Scene(showAllProductsLayout, Main.screenWidth, Main.screenHeight);
-        Main.window.setScene(showAllProductsScene);
+        Scene allProductsScene = new Scene(showAllProductsLayout, Main.screenWidth, Main.screenHeight);
+        Main.window.setScene(allProductsScene);
     }
 
     public static void showFavouriteProducts(Scene prev){

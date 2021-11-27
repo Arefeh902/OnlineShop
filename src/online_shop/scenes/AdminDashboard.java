@@ -25,9 +25,11 @@ public class AdminDashboard {
         allSellersButton.setOnAction(e -> showAllSellers(Main.adminDashboardScene));
         Button allPurchasesButton = new Button("all Purchases");
         allPurchasesButton.setOnAction(e -> UserDashboard.showPurchases(Main.appData.purchases, Main.adminDashboardScene));
+        Button allProductsButton = new Button("all products");
+        allProductsButton.setOnAction(e -> UserDashboard.showAllProducts(Main.adminDashboardScene));
         Button logoutButton = new Button("logout");
         logoutButton.setOnAction(e -> User.logout());
-        adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton, logoutButton);
+        adminDashboardLayout.getChildren().addAll(title, allUsersButton, allSellersButton, allPurchasesButton, allProductsButton, logoutButton);
         Main.adminDashboardScene = new Scene(adminDashboardLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.adminDashboardScene);
     }
@@ -87,4 +89,5 @@ public class AdminDashboard {
         Main.allSellersScene = new Scene(showAllSellersLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.allSellersScene);
     }
+
 }

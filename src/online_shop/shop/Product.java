@@ -38,19 +38,14 @@ public class Product {
         this.inventory = inventory;
     }
 
+    //not enough time to add feature
     public void archiveProduct(){
         this.status = ProductStatus.ARCHIVED;
     }
 
+    //not enough time to add feature
     public void deleteProduct(){
         this.status = ProductStatus.DELETED;
-    }
-
-    public static void allProducts(){
-        System.out.println("id name price inventory");
-        for(Product product: Main.appData.products){
-            System.out.println(product.toString());
-        }
     }
 
     @Override

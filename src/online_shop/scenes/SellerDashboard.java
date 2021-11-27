@@ -133,7 +133,7 @@ public class SellerDashboard {
             if(Main.appData.currentSeller != null)
                 Main.window.setScene(Main.sellerDashboardScene);
             else if(Main.appData.currentAdmin != null)
-                System.out.println("should implement");
+                UserDashboard.showAllProducts(Main.adminDashboardScene);
         });
         editProductLayout.getChildren().addAll(name, price, inventory, editButton, emptyLabel, backButton);
         Scene editProductScene = new Scene(editProductLayout, Main.screenWidth, Main.screenHeight);
