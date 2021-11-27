@@ -101,11 +101,9 @@ public class User {
 
     public static Boolean register(int userType, String username, String password, String verifyPassword){
         if(!User.isUsernameUnique(username)){
-            System.out.println("Username must be unique");
             return Boolean.FALSE;
         }
         if(!password.equals(verifyPassword)){
-            System.out.println("passwords didn't match, try again!");
             return Boolean.FALSE;
         }
         try{
@@ -147,7 +145,6 @@ public class User {
         if(Admin.login(username, password)){
             return true;
         }
-        System.out.println("username and password don't match, try again");
         return false;
     }
 

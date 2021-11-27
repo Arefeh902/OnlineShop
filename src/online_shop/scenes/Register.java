@@ -43,21 +43,32 @@ public class Register {
         Label verifyPasswordLabel = new Label("Enter password again");
         TextField verifyPassword = new TextField();
         verifyPassword.setMaxWidth((float)Main.screenWidth/4);
-        Button registerButton = new Button();
-        registerButton.setText("register");
+        Label emptyLabel = new Label("");
+        Button registerButton = new Button("register");
         registerButton.setOnAction(e -> {
             if(User.register(userType, username.getText(), password.getText(), verifyPassword.getText())){
+                emptyLabel.setText("");
+                username.clear();
+                password.clear();
+                verifyPassword.clear();
                 Main.window.setScene(Main.loginScene);
+            }else{
+                if(!User.isUsernameUnique(username.getText())){
+                    emptyLabel.setText("Username must be unique");
+                    username.clear();
+                    password.clear();
+                    verifyPassword.clear();
+                }else{
+                    emptyLabel.setText("passwords didn't match, try again!");
+                    password.clear();
+                    verifyPassword.clear();
+                }
             }
-            username.clear();
-            password.clear();
-            verifyPassword.clear();
         });
-        Button loginButton = new Button();
-        loginButton.setText("login");
+        Button loginButton = new Button("login");
         loginButton.setOnAction(e -> Main.window.setScene(Main.loginScene));
         registerLayout.getChildren().addAll(title, hbox, usernameLabel, username, passwordLabel, password);
-        registerLayout.getChildren().addAll(verifyPasswordLabel, verifyPassword, registerButton, loginButton);
+        registerLayout.getChildren().addAll(verifyPasswordLabel, verifyPassword, emptyLabel, registerButton, loginButton);
         registerLayout.setAlignment(Pos.CENTER);
         Main.registerScene = new Scene(registerLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.registerScene);
@@ -72,19 +83,21 @@ public class Register {
         Label passwordLabel = new Label("Enter password");
         TextField password = new TextField();
         password.setMaxWidth((float)Main.screenWidth/4);
-        Button loginButton = new Button();
-        loginButton.setText("login");
+        Label emptyLabel = new Label("");
+        Button loginButton = new Button("login");
         loginButton.setOnAction(e -> {
             if(User.login(username.getText(), password.getText())){
+                emptyLabel.setText("");
                 UserDashboard.setDashboard();
+            }else{
+                emptyLabel.setText("username and password don't match, try again");
             }
             username.clear();
             password.clear();
         });
-        Button registerButton = new Button();
-        registerButton.setText("register");
+        Button registerButton = new Button("register");
         registerButton.setOnAction(e -> Main.window.setScene(Main.registerScene));
-        loginLayout.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, loginButton, registerButton);
+        loginLayout.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, emptyLabel, loginButton, registerButton);
         loginLayout.setAlignment(Pos.CENTER);
         Main.loginScene = new Scene(loginLayout, Main.screenWidth, Main.screenHeight);
         Main.window.setScene(Main.loginScene);

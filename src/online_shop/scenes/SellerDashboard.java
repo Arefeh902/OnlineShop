@@ -106,9 +106,9 @@ public class SellerDashboard {
         Button editButton = new Button("edit");
         editButton.setOnAction(e -> {
             emptyLabel.setText("");
-            if(nameText.getText() != null)
+            if(!nameText.getText().equals(""))
                 product.editName(nameText.getText());
-            if(priceText.getText() != null){
+            if(!priceText.getText().equals("")){
                 try{
                     Long newPrice = Long.parseLong(priceText.getText());
                     product.editPrice(newPrice);
@@ -116,7 +116,7 @@ public class SellerDashboard {
                     emptyLabel.setText("invalid input!");
                 }
             }
-            if(inventoryText.getText() != null){
+            if(!inventoryText.getText().equals("")){
                 try{
                     Long newInventory = Long.parseLong(inventoryText.getText());
                     product.editInventory(newInventory);
